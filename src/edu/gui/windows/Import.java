@@ -1,11 +1,7 @@
 package edu.gui.windows;
 
 import java.awt.event.*;
-import java.io.BufferedReader;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.awt.*;
 
 import javax.swing.*;
@@ -29,6 +25,7 @@ public class Import extends DFrame {
         win.setBorder(BorderFactory.createEmptyBorder(3, 0, 0, 0));
 
         path = new JLabel();
+        path.setForeground(DFrame.AQUA);
         path.setPreferredSize(new Dimension(385, 30));
         win.add(path);
 

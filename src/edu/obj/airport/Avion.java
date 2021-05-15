@@ -1,36 +1,37 @@
 package edu.obj.airport;
 
-import edu.obj.Aeropuerto;
-
 public class Avion {
-    private final Aerolinea aerolinea;
+    private final String aerolinea;
     private final double gasPerMilla;
     private final int maxGasolina;
     private final int codigo;
-    private Aeropuerto aeropuertoActual;
-    private int maxPasajeros;
+    private String aeropuertoActual;
+    private Vuelo vuelo;
+    private int rows;
+    private int cols;
     private int gasolinaActual;
     
-    public Avion(Aerolinea aerolinea, Aeropuerto aeropuertoActual, int codigo, int maxPasajeros, int maxGasolina,
+    public Avion(String aerolinea, String aeropuertoActual, int codigo, int rows, int cols, int maxGasolina,
             int gasolinaActual, double gasPerMilla) {
         this.aerolinea = aerolinea;
         this.aeropuertoActual = aeropuertoActual;
         this.codigo = codigo;
-        this.maxPasajeros = maxPasajeros;
+        this.rows = rows;
+        this.cols = cols;
         this.maxGasolina = maxGasolina;
         this.gasolinaActual = gasolinaActual;
         this.gasPerMilla = gasPerMilla;
     }
 
     public String getAerolinea() {
-        return this.aerolinea.getNombre();
+        return this.aerolinea;
     }
 
     public String getAeropuertoActual() {
-        return this.aeropuertoActual.getNombre();
+        return this.aeropuertoActual;
     }
 
-    public void setAeropuertoActual(Aeropuerto aeropuertoActual) {
+    public void setAeropuertoActual(String aeropuertoActual) {
         this.aeropuertoActual = aeropuertoActual;
     }
 
@@ -39,11 +40,7 @@ public class Avion {
     }
 
     public int getMaxPasajeros() {
-        return this.maxPasajeros;
-    }
-
-    public void setMaxPasajeros(int maxPasajeros) {
-        this.maxPasajeros = maxPasajeros;
+        return (this.cols - 1) * this.rows;
     }
 
     public int getMaxGasolina() {
@@ -61,5 +58,29 @@ public class Avion {
 
     public double getGasPerMilla() {
         return this.gasPerMilla;
+    }
+
+    public Vuelo getVuelo() {
+        return this.vuelo;
+    }
+
+    public void setVuelo(Vuelo nuevoVuelo) {
+        this.vuelo = nuevoVuelo;
+    }
+
+    public int getRows() {
+        return rows;
+    }
+
+    public void setRows(int rows) {
+        this.rows = rows;
+    }
+
+    public int getCols() {
+        return cols;
+    }
+
+    public void setCols(int cols) {
+        this.cols = cols;
     }
 }

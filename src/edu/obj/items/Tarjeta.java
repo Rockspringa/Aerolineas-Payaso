@@ -1,4 +1,4 @@
-package edu.obj;
+package edu.obj.items;
 
 /**
  * This class represent a card, indifferent if this is a credit card, or a debit card.
@@ -7,7 +7,7 @@ package edu.obj;
  * purposse.
  */
 public class Tarjeta {
-    private final Pasaporte pasaporte;
+    private final int pasaporte;
     private final int numTarjeta;
     private final int cvc;
     private int dinero;
@@ -19,7 +19,7 @@ public class Tarjeta {
      * @param dinero is the actual amount of money that the user gets.
      * @param cvc is an number for... I don't know...
      */
-    public Tarjeta(int numTarjeta, Pasaporte pasaporte, int dinero, int cvc) {
+    public Tarjeta(int numTarjeta, int pasaporte, int dinero, int cvc) {
         this.numTarjeta = numTarjeta;
         this.pasaporte = pasaporte;
         this.dinero = dinero;
@@ -40,7 +40,7 @@ public class Tarjeta {
      * @return the number that identify the card.
      */
     public int getNumeroTarjeta() {
-        return numTarjeta;
+        return this.numTarjeta;
     }
 
     /**
@@ -48,7 +48,7 @@ public class Tarjeta {
      * @return the number of the passport of the owner of the card, an user.
      */
     public int getNumPasaporte() {
-        return pasaporte.getNumeroPasaporte();
+        return this.pasaporte;
     }
 
     /**
@@ -56,7 +56,7 @@ public class Tarjeta {
      * @return the actual amount of money.
      */
     public int getDinero() {
-        return dinero;
+        return this.dinero;
     }
 
     /**
@@ -82,6 +82,6 @@ public class Tarjeta {
      * @return the number of the CVC.
      */
     public int getCvc() {
-        return cvc;
+        return this.cvc;
     }
 }

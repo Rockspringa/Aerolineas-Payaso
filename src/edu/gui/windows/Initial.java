@@ -9,7 +9,7 @@ import javax.swing.event.MouseInputListener;
 
 import edu.gui.components.DFrame;
 import edu.gui.files.Icon;
-import edu.gui.windows.passengers.PModul;
+import edu.gui.windows.passengers.TicketSale;
 
 public class Initial extends DFrame implements MouseInputListener {
     private Border generalBorder;
@@ -38,7 +38,7 @@ public class Initial extends DFrame implements MouseInputListener {
         Dimension dimPane = new Dimension(152, 192);
         Dimension dimImage = new Dimension(150, 150);
 
-        generalBorder = BorderFactory.createLineBorder(DFrame.FOCUS_COLOR, 3, true);
+        generalBorder = BorderFactory.createLineBorder(DFrame.SHADOW_BLUE, 3, true);
         paneBorder = BorderFactory.createEmptyBorder(1, 1, 1, 1);
         selectBorder = BorderFactory.createLineBorder(DFrame.AQUA, 1);
 
@@ -80,9 +80,13 @@ public class Initial extends DFrame implements MouseInputListener {
 
         /* The JLabels that just get text. */
 
-        textLbl = new JLabel("<html><div></div><p style=\"width:152px\">Bienvenido, aqui podras"
-                        + " seleccionar el modulo al que te dirijes, toma en cuenta que"
-                        + " el modulo de manejo es solo para empleados.</p></html>");
+        textLbl = new JLabel("<html><div></div><div style=\"border-width:6px 2px 6px 4px;"
+                        + "border-color:#141428;border-style:solid;\">"
+                        + "<p style=\"width:145px; text-align:center;"
+                        + "background-color:#141428;\">"
+                        + "Bienvenido, aqui podras seleccionar el modulo al que te dirijes, "
+                        + "toma en cuenta que el modulo de manejo es solo para empleados."
+                        + "</p></div></html>");
         textLbl.setVerticalAlignment(JLabel.TOP);
         textLbl.setHorizontalAlignment(JLabel.LEFT);
         textPanel.add(textLbl, BorderLayout.CENTER);
@@ -100,11 +104,11 @@ public class Initial extends DFrame implements MouseInputListener {
     public void actionPerformed(ActionEvent e) {}
 
     @Override
-    public void mouseClicked(java.awt.event.MouseEvent e) {
+    public void mouseClicked(MouseEvent e) {
     }
 
     @Override
-    public void mousePressed(java.awt.event.MouseEvent e) {
+    public void mousePressed(MouseEvent e) {
         if (e.getSource() == publicPane) {
             publicImage.setBackground(DFrame.AQUA);
             publicPane.setBorder(selectBorder);
@@ -115,47 +119,52 @@ public class Initial extends DFrame implements MouseInputListener {
     }
 
     @Override
-    public void mouseReleased(java.awt.event.MouseEvent e) {
+    public void mouseReleased(MouseEvent e) {
         Color bg = null;
         DFrame frame = null;
         JPanel pane = (JPanel) (e.getSource());
         if (pane == publicPane) {
             bg = publicImage.getBackground();
-            frame = new PModul();
+            frame = new TicketSale();
         } else if (pane == employeesPane) {
             bg = employeesImage.getBackground();
         } if (bg != DFrame.BACKG_COLOR) {
             this.mouseExited(e);
-        } if (frame != null) {
-            this.dispose();
-            frame.open();
+            if (frame != null) {
+                this.dispose();
+                frame.open();
+            }
         }
         pane.setBorder(paneBorder);
     }
 
     @Override
-    public void mouseEntered(java.awt.event.MouseEvent e) {
+    public void mouseEntered(MouseEvent e) {
         if (e.getSource() == publicPane) {
-            publicImage.setBackground(DFrame.SHADOW_BLUE);
+            publicImage.setBackground(DFrame.FOCUS_COLOR);
+            publicLbl.setForeground(DFrame.AQUA);
         } if (e.getSource() == employeesPane) {
-            employeesImage.setBackground(DFrame.SHADOW_BLUE);
+            employeesImage.setBackground(DFrame.FOCUS_COLOR);
+            employeesLbl.setForeground(DFrame.AQUA);
         }
     }
 
     @Override
-    public void mouseExited(java.awt.event.MouseEvent e) {
+    public void mouseExited(MouseEvent e) {
         JPanel pane = (JPanel) (e.getSource());
         if (pane == publicPane) {
             publicImage.setBackground(DFrame.BACKG_COLOR);
+            publicLbl.setForeground(DFrame.WHITE);
         } if (pane == employeesPane) {
             employeesImage.setBackground(DFrame.BACKG_COLOR);
+            employeesLbl.setForeground(DFrame.WHITE);
         }
         pane.setBorder(paneBorder);
     }
 
     @Override
-    public void mouseDragged(java.awt.event.MouseEvent e) {}
+    public void mouseDragged(MouseEvent e) {}
 
     @Override
-    public void mouseMoved(java.awt.event.MouseEvent e) {}
+    public void mouseMoved(MouseEvent e) {}
 }

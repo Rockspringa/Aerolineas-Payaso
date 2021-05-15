@@ -1,5 +1,9 @@
 package edu.obj;
 
+import java.util.ArrayList;
+
+import edu.obj.airport.*;
+
 /**
  * Is the class that saves the dates of an airport, like name of this, his city, and his country.
  */
@@ -7,6 +11,8 @@ public class Aeropuerto {
     private final String nombre;
     private final String ciudad;
     private final String pais;
+    private final ArrayList<Integer> codAviones;
+    private final ArrayList<Distancia> distancias;
 
     /**
      * Create an airport with all his attributes, this attributes are all inmutables.
@@ -18,6 +24,8 @@ public class Aeropuerto {
         this.nombre = nombre;
         this.ciudad = ciudad;
         this.pais = pais;
+        this.codAviones = new ArrayList<Integer>();
+        this.distancias = new ArrayList<Distancia>();
     }
 
     /**
@@ -25,7 +33,7 @@ public class Aeropuerto {
      * @return the name of the airport.
      */
     public String getNombre() {
-        return nombre;
+        return this.nombre;
     }
 
     /**
@@ -33,7 +41,7 @@ public class Aeropuerto {
      * @return the name of the city of the airport.
      */
     public String getCiudad() {
-        return ciudad;
+        return this.ciudad;
     }
 
     /**
@@ -41,6 +49,38 @@ public class Aeropuerto {
      * @return the name of the country of the airport.
      */
     public String getPais() {
-        return pais;
+        return this.pais;
+    }
+
+    /**
+     * 
+     * @return an <code>ArrayList</code> that contais all the planes in the airport, it's not a copy, beaware.
+     */
+    public ArrayList<Integer> getAviones() {
+        return this.codAviones;
+    }
+    
+    /**
+     * 
+     * @return a object <code>Distancia</code>, only if the destination airport it's avaible, otherwise <code>null</code>.
+     */
+    public Distancia getDistancia(String destino) {
+        for (Distancia dist : this.distancias) {
+            if (dist.getOrigen().getNombre().equals(destino)) {
+                return dist;
+            }
+        } return null;
+    }
+
+    /**
+     * 
+     * @return a object <code>Distancia</code>, only if the destination airport it's avaible, otherwise <code>null</code>.
+     */
+    public Distancia getDistancia(Aeropuerto destino) {
+        return this.getDistancia(destino.getNombre());
+    }
+
+    public ArrayList<Distancia> getDistancias() {
+        return this.distancias;
     }
 }

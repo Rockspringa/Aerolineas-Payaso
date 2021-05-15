@@ -1,4 +1,4 @@
-package edu.obj;
+package edu.obj.items;
 
 import java.time.*;
 import java.time.temporal.*;
@@ -52,15 +52,15 @@ public class Pasaporte {
         this.millasRecorridas = millasRecorridas;
     }
 
-    public Pasaporte(Pasaporte oldPasaporte, LocalDate emision, LocalDate vencimiento, int numPasaporte) {
+    public Pasaporte(Pasaporte oldPasaporte, LocalDate vencimiento) {
         this.nombre = oldPasaporte.nombre;
         this.apellido = oldPasaporte.apellido;
         this.sexo = oldPasaporte.sexo;
         this.nacimiento = oldPasaporte.nacimiento;
-        this.emision = emision;
+        this.emision = LocalDate.now();
         this.vencimiento = vencimiento;
         this.nacionalidad = oldPasaporte.nacionalidad;
-        this.numPasaporte = numPasaporte;
+        this.numPasaporte = oldPasaporte.numPasaporte;
         this.estadoCivil = oldPasaporte.estadoCivil;
         this.paisActual = oldPasaporte.paisActual;
         this.millasRecorridas = oldPasaporte.millasRecorridas;

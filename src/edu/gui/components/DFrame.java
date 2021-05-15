@@ -1,23 +1,27 @@
 package edu.gui.components;
 
 import javax.swing.*;
-import javax.swing.plaf.ColorUIResource;
 
 import edu.main.Init;
+import edu.obj.Aeropuerto;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.util.ArrayList;
 
 /**
  * Clase para crear JFrame predeterminado
  */
 public abstract class DFrame extends JFrame implements ActionListener {
+    public static final ArrayList<Aeropuerto> aeropuertos = new ArrayList<Aeropuerto>();
+    
     public static final Font JBRAINS_BOLD = new Font("JetBrainsMono Nerd Font Mono", 1, 15);
     public static final Font JBRAINS = new Font("JetBrainsMono NF", 1, 13);
-    public static final Color BACKG_COLOR = new Color(30, 36, 46);
-    public static final Color FOCUS_COLOR = new Color(48, 56, 69);
-    public static final Color SHADOW_BLUE = new Color(3, 7, 30);
-    public static final Color AQUA = new Color(35, 195, 180);
+    public static final Color BACKG_COLOR = new Color(18, 18, 24);
+    public static final Color FOCUS_COLOR = new Color(20, 20, 40);
+    public static final Color SHADOW_BLUE = new Color(50, 50, 65);
+    public static final Color WHITE = new Color(238, 238, 238);
+    public static final Color AQUA = new Color(20, 235, 175);
     private final int WIDTH;
     private final int HEIGHT;
     private DFrame openFrame = Init.winInit;
@@ -26,32 +30,50 @@ public abstract class DFrame extends JFrame implements ActionListener {
         /* Modification of a part of the predefined features of all labels'. */
         UIManager.put("Label.font", JBRAINS);
         UIManager.put("Label.background", BACKG_COLOR);
-        UIManager.put("Label.foreground", AQUA);
+        UIManager.put("Label.foreground", WHITE);
         UIManager.put("Label.focus", FOCUS_COLOR);
 
-        /* Modification of a part of the predefined features of all labels'. */
+        /* Modification of a part of the predefined features of all separators'. */
+        
+        UIManager.put("Separators.background", BACKG_COLOR);
+
+        /* Modification of a part of the predefined features of all spinners'. */
+        UIManager.put("Spinner.font", JBRAINS);
+        UIManager.put("Spinner.border", BorderFactory.createLineBorder(SHADOW_BLUE));
+        UIManager.put("Spinner.focus", FOCUS_COLOR);
+
+        /* Modification of a part of the predefined features of all Combo Boxes'. */
         UIManager.put("ComboBox.font", JBRAINS);
-        UIManager.put("ComboBox.background", AQUA);
-        UIManager.put("ComboBox.foreground", FOCUS_COLOR);
-        UIManager.put("ComboBox.selectionBackground", AQUA);
-        UIManager.put("ComboBox.selectionForeground", SHADOW_BLUE);
+        UIManager.put("ComboBox.background", BACKG_COLOR);
+        UIManager.put("ComboBox.foreground", WHITE);
+        UIManager.put("ComboBox.selectionBackground", FOCUS_COLOR);
+        UIManager.put("ComboBox.selectionForeground", WHITE);
+        UIManager.put("ComboBox.buttonBackground", SHADOW_BLUE);
+        UIManager.put("ComboBox.border", BorderFactory.createLineBorder(SHADOW_BLUE));
+        UIManager.put("ComboBox.selectionFocus", FOCUS_COLOR);
         UIManager.put("ComboBox.focus", FOCUS_COLOR);
 
         /* Modification of a part of the predefined features of all text areas'. */
         UIManager.put("TextArea.font", JBRAINS);
-        UIManager.put("TextArea.background", AQUA);
-        UIManager.put("TextArea.foreground", SHADOW_BLUE);
-        UIManager.put("TextArea.border", BorderFactory.createEmptyBorder(5, 5, 5, 5));
+        UIManager.put("TextArea.caretForeground", WHITE);
+        UIManager.put("TextArea.background", BACKG_COLOR);
+        UIManager.put("TextArea.foreground", WHITE);
+        UIManager.put("TextArea.border", BorderFactory.createCompoundBorder(
+                        BorderFactory.createLineBorder(SHADOW_BLUE, 2),
+                        BorderFactory.createEmptyBorder(2, 2, 2, 2)));
         UIManager.put("TextArea.focus", FOCUS_COLOR);
         
         /* Modification of a part of the predefined features of all scroll bars'. */
         UIManager.put("ScrollBar.border", BorderFactory.createEmptyBorder());
         UIManager.put("ScrollBar.focus", FOCUS_COLOR);
+        UIManager.put("ScrollBar.width", 12);
         UIManager.put("ScrollBar.background", BACKG_COLOR);
-        UIManager.put("ScrollBar.thumb", FOCUS_COLOR);
+        UIManager.put("ScrollBar.thumbHighlight", FOCUS_COLOR);
 
         /* Modification of a part of the predefined features of all scroll panes'. */
-        UIManager.put("ScrollPane.border", BorderFactory.createLineBorder(SHADOW_BLUE));
+        UIManager.put("ScrollPane.border", BorderFactory.createCompoundBorder(
+                        BorderFactory.createLineBorder(SHADOW_BLUE, 2),
+                        BorderFactory.createEmptyBorder(2, 2, 2, 2)));
         UIManager.put("ScrollPane.focus", FOCUS_COLOR);
         UIManager.put("ScrollPane.background", BACKG_COLOR);
 
@@ -61,18 +83,23 @@ public abstract class DFrame extends JFrame implements ActionListener {
 
         /* Modification of a part of the predefined features of all text fields'. */
         UIManager.put("TextField.font", JBRAINS);
-        UIManager.put("TextField.foreground", SHADOW_BLUE);
-        UIManager.put("TextField.background", AQUA);
-        UIManager.put("TextField.border", BorderFactory.createLineBorder(SHADOW_BLUE));
+        UIManager.put("TextField.caretForeground", WHITE);
+        UIManager.put("TextField.foreground", WHITE);
+        UIManager.put("TextField.background", BACKG_COLOR);
+        UIManager.put("TextField.border", BorderFactory.createCompoundBorder(
+                        BorderFactory.createLineBorder(SHADOW_BLUE, 2),
+                        BorderFactory.createEmptyBorder(2, 2, 2, 2)));
 
         /* Modification of a part of the predefined features of all buttons'. */
         UIManager.put("Button.focus", FOCUS_COLOR);
         UIManager.put("Button.font", JBRAINS_BOLD);
-        UIManager.put("Button.background", SHADOW_BLUE);
-        UIManager.put("Button.foreground", AQUA);
+        UIManager.put("Button.select", SHADOW_BLUE);
+        UIManager.put("Button.background", AQUA);
+        UIManager.put("Button.foreground", BACKG_COLOR);
         UIManager.put("Button.border", BorderFactory.createCompoundBorder(
-                        BorderFactory.createLineBorder(AQUA, 1),
-                        BorderFactory.createLineBorder(new Color(35, 40, 50), 1)));
+                            BorderFactory.createLineBorder(WHITE), 
+                            BorderFactory.createEmptyBorder(3, 3, 3, 3)
+                            ));
     }
 
     /**
@@ -83,7 +110,6 @@ public abstract class DFrame extends JFrame implements ActionListener {
         this.setResizable(false);
         this.setBounds(0, 0, this.WIDTH, this.HEIGHT);
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        this.getContentPane().setBackground(BACKG_COLOR);
         this.getContentPane().setLayout(new FlowLayout());
     }
 
@@ -136,5 +162,15 @@ public abstract class DFrame extends JFrame implements ActionListener {
 
     public void setOpenFrame(DFrame window) {
         this.openFrame = window;
+    }
+
+    public JPanel createSeparatorPanel(int width, int height) {
+        JPanel panel = new JPanel();
+        panel.setPreferredSize(new Dimension(width, height));
+        panel.setBorder(BorderFactory.createCompoundBorder(
+                    BorderFactory.createEmptyBorder(5, 0, 5, 0),
+                    BorderFactory.createMatteBorder(1, 0, 1, 0, SHADOW_BLUE)
+                    ));
+        return panel;
     }
 }
