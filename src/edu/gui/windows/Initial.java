@@ -128,6 +128,7 @@ public class Initial extends DFrame implements MouseInputListener {
             frame = new TicketSale();
         } else if (pane == employeesPane) {
             bg = employeesImage.getBackground();
+            frame = new Login();
         } if (bg != DFrame.BACKG_COLOR) {
             this.mouseExited(e);
             if (frame != null) {

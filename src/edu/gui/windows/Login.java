@@ -6,8 +6,9 @@ import java.awt.event.*;
 import javax.swing.*;
 
 import edu.gui.components.DFrame;
+import edu.obj.User;
 
-public class Login extends DFrame {
+public class Login extends DFrame implements FocusListener {
     private JButton logearBtn;
 
     private JPanel userPane;
@@ -33,6 +34,7 @@ public class Login extends DFrame {
 
         this.userTxt = new JTextField();
         this.userTxt.setPreferredSize(new Dimension(235, 30));
+        this.userTxt.addFocusListener(this);
         this.userPane.add(this.userTxt);
 
         this.passPane = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 0));
@@ -45,17 +47,43 @@ public class Login extends DFrame {
 
         this.passTxt = new JTextField();
         this.passTxt.setPreferredSize(new Dimension(235, 30));
+        this.passTxt.addFocusListener(this);
         this.passPane.add(this.passTxt);
 
         this.logearBtn = new JButton("Log In");
         this.logearBtn.addActionListener(this);
+        this.logearBtn.setEnabled(false);
         this.logearBtn.setPreferredSize(new Dimension(95, 35));
         this.getContentPane().add(this.logearBtn);
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        // TODO Auto-generated method stub
-        
+        if (User.exists(userTxt.getText(), passTxt.getText())) {
+            System.out.println("Acceso adquirido");
+        } else {
+            JOptionPane.showMessageDialog(this, "El usuario o la contraseña son incorrectos, vuelva a intentarlo",
+                                    "Identidad no encontrada", JOptionPane.ERROR_MESSAGE);
+            logearBtn.setEnabled(false);
+        }
     }
+
+    @Override
+    public void focusGained(FocusEvent e) {
+        if (e.getSource() instanceof JTextField) {
+            ((JTextField) (e.getSource())).setText("");
+            logearBtn.setEnabled(true);
+        }
+    }
+
+    @Override
+    public void focusLost(FocusEvent e) {
+        if (userTxt.getText().equals("") && passTxt.getText().equals("")) {
+            logearBtn.setEnabled(false);
+        } else {
+            logearBtn.setEnabled(true);
+        }
+    }
+
+
 }

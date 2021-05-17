@@ -21,6 +21,7 @@ public class Asientos extends DFrame implements MouseInputListener {
     private Border pasilloBord;
     private Border overBord;
 
+    private JPanel paneBtn;
     private JButton crearBtn;
 
     public Asientos(Avion avion) {
@@ -73,9 +74,12 @@ public class Asientos extends DFrame implements MouseInputListener {
             }
         }.start(this);
 
+        paneBtn = new JPanel();
+        win.add(paneBtn, BorderLayout.PAGE_END);
+
         crearBtn = new JButton("Seleccionar asientos");
         crearBtn.addActionListener(this);
-        win.add(crearBtn, BorderLayout.PAGE_END);
+        paneBtn.add(crearBtn);
     }
 
     @Override

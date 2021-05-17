@@ -1,23 +1,37 @@
 package edu.obj.airport;
 
-import edu.obj.Aeropuerto;
+import java.util.ArrayList;
 
-public class Distancia {
-    private final Aeropuerto origen;
-    private final Aeropuerto destino;
+import edu.obj.*;
+
+public class Distancia implements Creable {
+    private static final ArrayList<String> origenes = new  ArrayList<>();
+    private static final ArrayList<String> destinos = new  ArrayList<>();
+    private final String origen;
+    private final String destino;
     private final int millas;
 
-    public Distancia(Aeropuerto origen, Aeropuerto destino, int millas) {
+    public Distancia(String origen, String destino, int millas) {
         this.origen = origen;
         this.destino = destino;
         this.millas = millas;
+        origenes.add(origen);
+        destinos.add(destino);
     }
 
-    public Aeropuerto getOrigen() {
+    public static boolean exists(String origen, String destino) {
+        try {
+            return origenes.contains(origen) && destinos.get(origenes.indexOf(origen)).equals(destino);
+        } catch (IndexOutOfBoundsException e) {
+            return false;
+        }
+    }
+
+    public String getOrigen() {
         return this.origen;
     }
 
-    public Aeropuerto getDestino() {
+    public String getDestino() {
         return this.destino;
     }
 
@@ -28,5 +42,10 @@ public class Distancia {
     @Override
     public String toString() {
         return String.valueOf(this.millas);
+    }
+
+    @Override
+    public String getFilename() {
+        return "Distancia_" + this.origen + "_" + this.destino;
     }
 }

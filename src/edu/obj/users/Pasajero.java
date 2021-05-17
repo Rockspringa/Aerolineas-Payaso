@@ -45,4 +45,7 @@ public class Pasajero extends User {
         else
             throw new InsufficientResourcesException();
     }
+
+    @Override
+    public String getFilename() {return null;}
 }

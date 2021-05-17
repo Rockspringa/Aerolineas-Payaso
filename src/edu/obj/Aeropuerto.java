@@ -7,7 +7,8 @@ import edu.obj.airport.*;
 /**
  * Is the class that saves the dates of an airport, like name of this, his city, and his country.
  */
-public class Aeropuerto {
+public class Aeropuerto implements Creable {
+    private static final ArrayList<String> nombres = new ArrayList<>();
     private final String nombre;
     private final String ciudad;
     private final String pais;
@@ -26,6 +27,11 @@ public class Aeropuerto {
         this.pais = pais;
         this.codAviones = new ArrayList<Integer>();
         this.distancias = new ArrayList<Distancia>();
+        nombres.add(nombre);
+    }
+
+    public static boolean exists(String obj) {
+        return nombres.contains(obj);
     }
 
     /**
@@ -66,7 +72,7 @@ public class Aeropuerto {
      */
     public Distancia getDistancia(String destino) {
         for (Distancia dist : this.distancias) {
-            if (dist.getOrigen().getNombre().equals(destino)) {
+            if (dist.getOrigen().equals(destino)) {
                 return dist;
             }
         } return null;
@@ -82,5 +88,10 @@ public class Aeropuerto {
 
     public ArrayList<Distancia> getDistancias() {
         return this.distancias;
+    }
+
+    @Override
+    public String getFilename() {
+        return "Aeropuerto_" + this.nombre;
     }
 }

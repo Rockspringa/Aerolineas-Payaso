@@ -1,6 +1,11 @@
 package edu.obj.airport;
 
-public class Avion {
+import java.util.ArrayList;
+
+import edu.obj.Creable;
+
+public class Avion implements Creable {
+    private static final ArrayList<Integer> codigos = new ArrayList<>();
     private final String aerolinea;
     private final double gasPerMilla;
     private final int maxGasolina;
@@ -21,8 +26,17 @@ public class Avion {
         this.maxGasolina = maxGasolina;
         this.gasolinaActual = gasolinaActual;
         this.gasPerMilla = gasPerMilla;
+        codigos.add(codigo);
     }
 
+    public static boolean exists(Integer cod) {
+        return codigos.contains(cod);
+    }
+
+    public static boolean exists(int cod) {
+        return exists(Integer.valueOf(cod));
+    }
+    
     public String getAerolinea() {
         return this.aerolinea;
     }
@@ -82,5 +96,10 @@ public class Avion {
 
     public void setCols(int cols) {
         this.cols = cols;
+    }
+
+    @Override
+    public String getFilename() {
+        return "Avion_" + this.codigo;
     }
 }

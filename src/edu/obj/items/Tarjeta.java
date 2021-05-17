@@ -1,12 +1,17 @@
 package edu.obj.items;
 
+import java.util.ArrayList;
+
+import edu.obj.*;
+
 /**
  * This class represent a card, indifferent if this is a credit card, or a debit card.
  * This is only for the control of the money of the user. Takes values of numbre of the passport
  * of the user, an number to identify the card, and a cvc that is a number that I don't what is his
  * purposse.
  */
-public class Tarjeta {
+public class Tarjeta implements Creable {
+    private static final ArrayList<Integer> nums = new ArrayList<>();
     private final int pasaporte;
     private final int numTarjeta;
     private final int cvc;
@@ -24,6 +29,15 @@ public class Tarjeta {
         this.pasaporte = pasaporte;
         this.dinero = dinero;
         this.cvc = cvc;
+        nums.add(Integer.valueOf(numTarjeta));
+    }
+    
+    public static boolean exists(Integer num) {
+        return nums.contains(num);
+    }
+
+    public static boolean exists(int num) {
+        return exists(Integer.valueOf(num));
     }
     
     /**
@@ -83,5 +97,10 @@ public class Tarjeta {
      */
     public int getCvc() {
         return this.cvc;
+    }
+
+    @Override
+    public String getFilename() {
+        return "Tarjeta_" + this.numTarjeta;
     }
 }

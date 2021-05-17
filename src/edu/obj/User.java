@@ -1,12 +1,21 @@
 package edu.obj;
 
+import java.util.ArrayList;
+
 /**
  * Implements an user, this is the basic type of person that interacts with the program, this is the
  * abstract type of that one, but this don't have any abstract method, so it's an normal class.
  */
-public class User {
+public abstract class User implements Creable {
+    private static final ArrayList<String> users = new ArrayList<>();
+    private static final ArrayList<String> pass = new ArrayList<>();
     private final String nombre;
     private String contraseña = "";
+
+    static {
+        users.add("temp");
+        pass.add("temp");
+    }
 
     /**
      * Creates an user with his name and a password, this is the basic things of an user in this system.
@@ -16,6 +25,12 @@ public class User {
     public User(String nombre, String contraseña) {
         this.nombre = nombre;
         this.contraseña = contraseña;
+        if (exists("temp", "temp")) {
+            users.clear();
+            pass.clear();
+        }
+        users.add(nombre);
+        users.add(contraseña);
     }
 
     /**
@@ -25,6 +40,14 @@ public class User {
      */
     public User(String nombre) {
         this.nombre = nombre;
+    }
+
+    public static boolean exists(String nombre, String contraseña) {
+        try {
+            return users.contains(nombre) && pass.get(users.indexOf(nombre)).equals(contraseña);
+        } catch (IndexOutOfBoundsException e) {
+            return false;
+        }
     }
 
     /**
@@ -42,6 +65,8 @@ public class User {
     public void setContraseña(String contraseña) {
         if (this.contraseña.equals("")) {
             this.contraseña = contraseña;
+            users.add(nombre);
+            pass.add(nombre);
         }
     }
 

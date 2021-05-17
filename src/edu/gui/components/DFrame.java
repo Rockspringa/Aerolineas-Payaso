@@ -53,15 +53,15 @@ public abstract class DFrame extends JFrame implements ActionListener {
         UIManager.put("ComboBox.selectionFocus", FOCUS_COLOR);
         UIManager.put("ComboBox.focus", FOCUS_COLOR);
 
-        /* Modification of a part of the predefined features of all text areas'. */
-        UIManager.put("TextArea.font", JBRAINS);
-        UIManager.put("TextArea.caretForeground", WHITE);
-        UIManager.put("TextArea.background", BACKG_COLOR);
-        UIManager.put("TextArea.foreground", WHITE);
-        UIManager.put("TextArea.border", BorderFactory.createCompoundBorder(
+        /* Modification of a part of the predefined features of all editor panes'. */
+        UIManager.put("EditorPane.font", JBRAINS);
+        UIManager.put("EditorPane.caretForeground", WHITE);
+        UIManager.put("EditorPane.background", BACKG_COLOR);
+        UIManager.put("EditorPane.foreground", WHITE);
+        UIManager.put("EditorPane.border", BorderFactory.createCompoundBorder(
                         BorderFactory.createLineBorder(SHADOW_BLUE, 2),
                         BorderFactory.createEmptyBorder(2, 2, 2, 2)));
-        UIManager.put("TextArea.focus", FOCUS_COLOR);
+        UIManager.put("EditorPane.focus", FOCUS_COLOR);
         
         /* Modification of a part of the predefined features of all scroll bars'. */
         UIManager.put("ScrollBar.border", BorderFactory.createEmptyBorder());

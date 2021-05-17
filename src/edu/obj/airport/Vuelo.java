@@ -3,19 +3,19 @@ package edu.obj.airport;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
-import edu.obj.Aeropuerto;
+import edu.obj.*;
 
-public class Vuelo {
-    private static final ArrayList<String> codigos = new ArrayList<String>();
+public class Vuelo implements Creable {
+    private static final ArrayList<Integer> codigos = new ArrayList<Integer>();
     private final int precioBoleto;
     private final Avion avion;
-    private final String codigo;
+    private final int codigo;
     private final Aeropuerto origen;
     private final Aeropuerto destino;
     private final LocalDate fechaVuelo;
 
     
-    public Vuelo(int precioBoleto, Avion avion, String codigo, Aeropuerto origen, Aeropuerto destino,
+    public Vuelo(int precioBoleto, Avion avion, int codigo, Aeropuerto origen, Aeropuerto destino,
             LocalDate fechaVuelo) {
         this.avion = avion;
         this.codigo = codigo;
@@ -26,15 +26,15 @@ public class Vuelo {
         Vuelo.codigos.add(codigo);
     }
     
-    public static boolean isOcupped(String codigo) {
-        for (String cod : Vuelo.codigos) {
-            if (cod.equals(codigo)) {
-                return false;
-            }
-        } return true;
+    public static boolean exists(Integer cod) {
+        return codigos.contains(cod);
     }
 
-    public String getCodigo() {
+    public static boolean exists(int cod) {
+        return exists(Integer.valueOf(cod));
+    }
+    
+    public int getCodigo() {
         return this.codigo;
     }
 
@@ -56,5 +56,10 @@ public class Vuelo {
 
     public LocalDate getFechaVuelo() {
         return this.fechaVuelo;
+    }
+
+    @Override
+    public String getFilename() {
+        return "Vuelo_" + this.codigo;
     }
 }

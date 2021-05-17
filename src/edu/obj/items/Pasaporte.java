@@ -2,10 +2,13 @@ package edu.obj.items;
 
 import java.time.*;
 import java.time.temporal.*;
+import java.util.ArrayList;
 
+import edu.obj.Creable;
 import edu.obj.enums.Sexo;
 
-public class Pasaporte {
+public class Pasaporte implements Creable {
+    private static final ArrayList<Integer> nums = new ArrayList<>();
     private final LocalDate nacimiento;
     private final LocalDate emision;
     private final LocalDate vencimiento;
@@ -34,6 +37,7 @@ public class Pasaporte {
         this.contraseña = contraseña;
         this.paisActual = paisActual;
         this.millasRecorridas = millasRecorridas;
+        nums.add(Integer.valueOf(numPasaporte));
     }
 
     public Pasaporte(String nombre, String apellido, Sexo sexo, LocalDate nacimiento, LocalDate emision,
@@ -50,6 +54,7 @@ public class Pasaporte {
         this.estadoCivil = estadoCivil;
         this.paisActual = paisActual;
         this.millasRecorridas = millasRecorridas;
+        nums.add(Integer.valueOf(numPasaporte));
     }
 
     public Pasaporte(Pasaporte oldPasaporte, LocalDate vencimiento) {
@@ -64,8 +69,17 @@ public class Pasaporte {
         this.estadoCivil = oldPasaporte.estadoCivil;
         this.paisActual = oldPasaporte.paisActual;
         this.millasRecorridas = oldPasaporte.millasRecorridas;
+        nums.add(Integer.valueOf(numPasaporte));
     }
 
+    public static boolean exists(Integer num) {
+        return nums.contains(num);
+    }
+
+    public static boolean exists(int num) {
+        return exists(Integer.valueOf(num));
+    }
+    
     public static boolean isValidNum(int num) {
         return num > 9_999_999 && num < 100_000_000;
     }
@@ -159,4 +173,8 @@ public class Pasaporte {
         this.millasRecorridas = millasRecorridas;
     }
 
+    @Override
+    public String getFilename() {
+        return "Pasaporte_" + this.numPasaporte;
+    }
 }

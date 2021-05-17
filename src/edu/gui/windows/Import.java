@@ -1,23 +1,19 @@
 package edu.gui.windows;
 
 import java.awt.event.*;
-import java.io.*;
 import java.awt.*;
 
 import javax.swing.*;
-import javax.swing.filechooser.*;
 import javax.swing.plaf.basic.BasicScrollBarUI;
 
 import edu.gui.components.DFrame;
+import edu.maker.imp.*;
 
 public class Import extends DFrame {
-    private int aprovedInt;
     private JLabel path;
     private JButton slctBtn;
-    private JTextArea txtErrors;
+    private JEditorPane txtMsg;
     private JScrollPane scrollPanel;
-    private JFileChooser slctFile;
-    private FileNameExtensionFilter filter;
 
     public Import() {
         super("Import zone", 535, 590);
@@ -33,49 +29,23 @@ public class Import extends DFrame {
         slctBtn.addActionListener(this);
         win.add(slctBtn);
         
-        txtErrors = new JTextArea(3, 3);
-        txtErrors.setEditable(false);
+        txtMsg = new JEditorPane();
+		txtMsg.setContentType("text/html");
+        txtMsg.putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, Boolean.TRUE);
+        txtMsg.setEditable(false);
         
-        scrollPanel = new JScrollPane(txtErrors);
+        scrollPanel = new JScrollPane(txtMsg);
         scrollPanel.setPreferredSize(new Dimension(500, 500));
         scrollPanel.getVerticalScrollBar().setUI(new BasicScrollBarUI() );
         scrollPanel.getHorizontalScrollBar().setUI(new BasicScrollBarUI());
         win.add(scrollPanel);
-
-        filter = new FileNameExtensionFilter("Text files", "txt");
-
-        slctFile = new JFileChooser();
-        slctFile.setFileFilter(filter);
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == slctBtn) {
-            aprovedInt = slctFile.showOpenDialog(this);
-            if (aprovedInt == JFileChooser.APPROVE_OPTION) {
-                path.setText(slctFile.getSelectedFile().getName());
-                try (FileInputStream fileIn = new FileInputStream(slctFile.getSelectedFile());) {
-                    InputStreamReader reader = new InputStreamReader(fileIn);
-                    BufferedReader br = new BufferedReader(reader);
-                    String line;
-    
-                    txtErrors.setText("");
-                    while ((line = br.readLine()) != null) {
-                        if (txtErrors.getText().equals("")) {
-                            txtErrors.setText(line);
-                        } else {
-                            txtErrors.setText(txtErrors.getText() + "\n" + line);
-                        }
-                    }
-    
-                } catch (FileNotFoundException exec) {
-                    JOptionPane.showMessageDialog(this, "Error 404, file not fount",
-                                            "Error 404", JOptionPane.ERROR_MESSAGE);
-                } catch (IOException exec) {
-                    JOptionPane.showMessageDialog(this, "Error trying to close the file.",
-                                            "File Error", JOptionPane.ERROR_MESSAGE);
-                }
-            }
+            ObjectMaker.cargarObjetos(this, txtMsg);
+            try {path.setText(ObjectMaker.getFileName());} catch(NullPointerException ex) {}
         }
     }
     
