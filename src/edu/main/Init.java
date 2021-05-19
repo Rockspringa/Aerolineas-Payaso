@@ -1,15 +1,9 @@
 package edu.main;
 
-import java.util.ArrayList;
-import java.io.*;
-
 import javax.swing.*;
 
 import edu.gui.components.DFrame;
 import edu.gui.windows.*;
-import edu.maker.exp.HTMLMaker;
-import edu.obj.airport.*;
-import edu.obj.*;
 
 public class Init {
     public static DFrame winInit;
@@ -18,8 +12,14 @@ public class Init {
         SwingUtilities.invokeLater(new Runnable(){
             @Override
             public void run() {
-                winInit = new Initial();
-                winInit.open();
+                try {
+                    winInit = new Initial();
+                    winInit.open();
+                } catch (Exception e) {
+                    JOptionPane.showMessageDialog(winInit,
+                                "Ocurrio un error que no se controlo", "Error",
+                                JOptionPane.ERROR_MESSAGE);
+                }
             }
         });
     }

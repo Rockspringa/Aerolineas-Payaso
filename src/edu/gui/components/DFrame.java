@@ -3,17 +3,14 @@ package edu.gui.components;
 import javax.swing.*;
 
 import edu.main.Init;
-import edu.obj.Aeropuerto;
 
 import java.awt.*;
 import java.awt.event.*;
-import java.util.ArrayList;
 
 /**
  * Clase para crear JFrame predeterminado
  */
 public abstract class DFrame extends JFrame implements ActionListener {
-    public static final ArrayList<Aeropuerto> aeropuertos = new ArrayList<Aeropuerto>();
     
     public static final Font JBRAINS_BOLD = new Font("JetBrainsMono Nerd Font Mono", 1, 15);
     public static final Font JBRAINS = new Font("JetBrainsMono NF", 1, 13);
@@ -100,6 +97,11 @@ public abstract class DFrame extends JFrame implements ActionListener {
                             BorderFactory.createLineBorder(WHITE), 
                             BorderFactory.createEmptyBorder(3, 3, 3, 3)
                             ));
+
+        
+        UIManager.put("OptionPane.background", BACKG_COLOR);
+        UIManager.put("OptionPane.messageBackground", BACKG_COLOR);
+        UIManager.put("OptionPane.messageForeground", WHITE);
     }
 
     /**
@@ -162,6 +164,10 @@ public abstract class DFrame extends JFrame implements ActionListener {
 
     public void setOpenFrame(DFrame window) {
         this.openFrame = window;
+    }
+
+    public DFrame getOpenFrame() {
+        return this.openFrame;
     }
 
     public JPanel createSeparatorPanel(int width, int height) {

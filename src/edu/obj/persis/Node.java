@@ -1,6 +1,8 @@
-package edu.obj;
+package edu.obj.persis;
 
-public class Node<T> {
+import java.io.Serializable;
+
+public class Node<T> implements Serializable {
     private Node<T> up;
     private Node<T> down;
     private Node<T> left;

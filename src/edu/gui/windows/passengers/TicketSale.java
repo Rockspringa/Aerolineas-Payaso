@@ -4,11 +4,15 @@ import java.awt.*;
 import java.awt.event.*;
 import java.time.LocalDate;
 
+import javax.naming.NameNotFoundException;
 import javax.swing.*;
-import edu.gui.components.DFrame;
-import edu.obj.airport.Avion;
 
-public class TicketSale extends DFrame {
+import edu.gui.components.DFrame;
+import edu.maker.imp.ObjectImp;
+import edu.obj.Aeropuerto;
+import edu.obj.airport.*;
+
+public class TicketSale extends DFrame implements ItemListener {
     private JLabel origenLbl;
     private JComboBox<Object> ciudades1Box;
     
@@ -50,8 +54,9 @@ public class TicketSale extends DFrame {
         origenLbl.setPreferredSize(dimLabel);
         win.add(origenLbl);
 
-        ciudades1Box = new JComboBox<Object>(aeropuertos.toArray());
+        ciudades1Box = new JComboBox<Object>(Aeropuerto.ciudades.values().toArray());
         ciudades1Box.setPreferredSize(dimComboBox);
+        ciudades1Box.addItemListener(this);
         win.add(ciudades1Box);
 
         win.add(this.createSeparatorPanel(455, 27));
@@ -62,8 +67,9 @@ public class TicketSale extends DFrame {
         destinoLbl.setPreferredSize(dimLabel);
         win.add(destinoLbl);
 
-        ciudades2Box = new JComboBox<Object>(aeropuertos.toArray());
+        ciudades2Box = new JComboBox<Object>(Aeropuerto.ciudades.values().toArray());
         ciudades2Box.setPreferredSize(dimComboBox);
+        ciudades2Box.addItemListener(this);
         win.add(ciudades2Box);
 
         win.add(this.createSeparatorPanel(455, 27));
@@ -87,7 +93,7 @@ public class TicketSale extends DFrame {
                             ));
         win.add(pasajerosPane);
 
-        pasajerosSpin = new JSpinner(new SpinnerNumberModel(1, 1, 10_000, 1));
+        pasajerosSpin = new JSpinner(new SpinnerNumberModel(1, 1, 1, 1));
         pasajerosPane.add(pasajerosSpin);
 
         win.add(this.createSeparatorPanel(455, 27));
@@ -134,8 +140,9 @@ public class TicketSale extends DFrame {
         aerolineaLbl.setPreferredSize(dimLabel);
         win.add(aerolineaLbl);
 
-        aerolineasBox = new JComboBox<Object>(/***/);
+        aerolineasBox = new JComboBox<Object>();
         aerolineasBox.setPreferredSize(dimComboBox);
+        aerolineasBox.addItemListener(this);
         win.add(aerolineasBox);
 
         win.add(this.createSeparatorPanel(455, 27));
@@ -147,7 +154,7 @@ public class TicketSale extends DFrame {
         vueloLbl.setPreferredSize(dimLabel);
         win.add(vueloLbl);
 
-        vuelosBox = new JComboBox<Object>(/***/);
+        vuelosBox = new JComboBox<Object>();
         vuelosBox.setPreferredSize(dimComboBox);
         win.add(vuelosBox);
 
@@ -169,8 +176,48 @@ public class TicketSale extends DFrame {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (true) {
+            Vuelo vu = null;
+            Avion av = null;
+            Aerolinea aer = null;
+            try {
+                aer = (Aerolinea) (ObjectImp.impObj(this, "Aerolinea_" +
+                        aerolineasBox.getSelectedItem() + "_" + ciudades1Box.getSelectedItem()));
+                vu = (Vuelo) (ObjectImp.impObj(this, "Vuelo_" +
+                        aer.getCodigos().get(aer.getVuelos().indexOf((LocalDate) (vuelosBox.getSelectedItem())))
+                        ));
+                av = (Avion) (ObjectImp.impObj(this, "Avion_" + vu.getAvion()));
+            } catch (NameNotFoundException ex) {}
             this.dispose(false);
-            new Asientos(new Avion(null, null, 123, 25, 15, 100, 100, 1)).open();
+            new Asientos(av, vu, true).open();
+        }
+    }
+
+    @Override
+    public void itemStateChanged(ItemEvent e) {
+        if (e.getSource() == ciudades1Box) {
+            Aeropuerto aer = null;
+            try {aer = (Aeropuerto) (ObjectImp.impObj(this, "Aeropuerto_" +
+                    Aeropuerto.ciuInv.get(ciudades1Box.getSelectedItem().toString())));
+            } catch (NameNotFoundException ex) {}
+            if (aer != null) {
+                aerolineasBox.removeAllItems();
+                for (int x = 0; x < aer.getAerolineas().size(); x++)
+                    aerolineasBox.addItem(aer.getAerolineas().get(x));
+            }
+        } if (e.getSource() == aerolineasBox) {
+            Aerolinea aer = null;
+            try {aer = (Aerolinea) (ObjectImp.impObj(this, "Aerolinea_"
+                    + aerolineasBox.getSelectedItem() + "_"
+                    + Aeropuerto.ciuInv.get(ciudades1Box.getSelectedItem().toString())));
+            } catch (NameNotFoundException ex) {}
+            if (aer != null) {
+                vuelosBox.removeAllItems();
+                for (int x = 0; x < aer.getVuelos().size(); x++) {
+                    if (aer.getVuelos().get(x).isAfter(LocalDate.now())) {
+                        vuelosBox.addItem(aer.getVuelos().get(x));
+                    }
+                }
+            }
         }
     }
 }

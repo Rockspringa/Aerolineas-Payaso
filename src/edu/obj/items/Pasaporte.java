@@ -4,27 +4,34 @@ import java.time.*;
 import java.time.temporal.*;
 import java.util.ArrayList;
 
+import javax.naming.InsufficientResourcesException;
+import javax.naming.NameNotFoundException;
+
+import edu.enums.Sexo;
+import edu.maker.exp.ObjectExp;
+import edu.maker.imp.ObjectImp;
 import edu.obj.Creable;
-import edu.obj.enums.Sexo;
 
 public class Pasaporte implements Creable {
     private static final ArrayList<Integer> nums = new ArrayList<>();
+    private final ArrayList<Reservacion> reservaciones;
     private final LocalDate nacimiento;
     private final LocalDate emision;
-    private final LocalDate vencimiento;
     private final int numPasaporte;
+    private LocalDate vencimiento;
     private String nombre;
     private String apellido;
     private String nacionalidad;
     private String estadoCivil;
-    private String contraseña = "";
+    private String contraseña = "555_1234";
     private String paisActual;
     private double millasRecorridas;
     private Sexo sexo;
+    private long tarjeta;
 
-    public Pasaporte(String nombre, String apellido, Sexo sexo, LocalDate nacimiento, LocalDate emision,
-            LocalDate vencimiento, String nacionalidad, int numPasaporte, String estadoCivil, String contraseña,
-            String paisActual, double millasRecorridas) {
+    public Pasaporte(int numPasaporte, String contraseña, LocalDate nacimiento, String nacionalidad,
+            String estadoCivil, String nombre, String apellido, Sexo sexo, LocalDate vencimiento,
+            LocalDate emision, String paisActual, double millasRecorridas) {
         this.nombre = nombre;
         this.apellido = apellido;
         this.sexo = sexo;
@@ -38,11 +45,12 @@ public class Pasaporte implements Creable {
         this.paisActual = paisActual;
         this.millasRecorridas = millasRecorridas;
         nums.add(Integer.valueOf(numPasaporte));
+        this.reservaciones = new ArrayList<Reservacion>();
     }
 
-    public Pasaporte(String nombre, String apellido, Sexo sexo, LocalDate nacimiento, LocalDate emision,
-            LocalDate vencimiento, String nacionalidad, int numPasaporte, String estadoCivil,
-            String paisActual, double millasRecorridas) {
+    public Pasaporte(int numPasaporte, LocalDate nacimiento, String nacionalidad, String estadoCivil,
+            String nombre, String apellido, Sexo sexo, LocalDate vencimiento,
+            LocalDate emision, String paisActual, double millasRecorridas) {
         this.nombre = nombre;
         this.apellido = apellido;
         this.sexo = sexo;
@@ -55,21 +63,34 @@ public class Pasaporte implements Creable {
         this.paisActual = paisActual;
         this.millasRecorridas = millasRecorridas;
         nums.add(Integer.valueOf(numPasaporte));
+        this.reservaciones = new ArrayList<Reservacion>();
     }
 
-    public Pasaporte(Pasaporte oldPasaporte, LocalDate vencimiento) {
-        this.nombre = oldPasaporte.nombre;
-        this.apellido = oldPasaporte.apellido;
-        this.sexo = oldPasaporte.sexo;
-        this.nacimiento = oldPasaporte.nacimiento;
-        this.emision = LocalDate.now();
-        this.vencimiento = vencimiento;
-        this.nacionalidad = oldPasaporte.nacionalidad;
-        this.numPasaporte = oldPasaporte.numPasaporte;
-        this.estadoCivil = oldPasaporte.estadoCivil;
-        this.paisActual = oldPasaporte.paisActual;
-        this.millasRecorridas = oldPasaporte.millasRecorridas;
-        nums.add(Integer.valueOf(numPasaporte));
+    public Tarjeta getTarjeta() {
+        Tarjeta t = null;
+        try {
+            t = (Tarjeta) (ObjectImp.impObj(null, "Tarjeta_" + tarjeta));
+        } catch (NameNotFoundException e) {}
+        return t;
+    }
+
+    public void setTarjeta(long tarjeta) {
+        this.tarjeta = tarjeta;
+    }
+
+    public void pay(int dinero) throws InsufficientResourcesException {
+        Tarjeta t = getTarjeta();
+        if (t.isEnoughMoney(dinero)) {
+            t.setDinero(t.getDinero() - dinero);
+            t.setGastos(dinero);
+            ObjectExp.expObj(null, t);
+        }
+        else
+            throw new InsufficientResourcesException();
+    }
+
+    public ArrayList<Reservacion> getReservaciones() {
+        return this.reservaciones;
     }
 
     public static boolean exists(Integer num) {
@@ -146,7 +167,11 @@ public class Pasaporte implements Creable {
     }
 
     public LocalDate getVencimiento() {
-        return vencimiento;
+        return this.vencimiento;
+    }
+
+    public void setVencimiento(LocalDate vencimiento) {
+        this.vencimiento = vencimiento;
     }
 
     public boolean isVencido() {

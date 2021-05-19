@@ -1,4 +1,4 @@
-package edu.gui.windows;
+package edu.gui.windows.airport.admin;
 
 import java.awt.event.*;
 import java.awt.*;
@@ -15,8 +15,9 @@ public class Import extends DFrame {
     private JEditorPane txtMsg;
     private JScrollPane scrollPanel;
 
-    public Import() {
+    public Import(DFrame frame) {
         super("Import zone", 535, 590);
+        setOpenFrame(frame);
         JPanel win = (JPanel) (this.getContentPane());
         win.setBorder(BorderFactory.createEmptyBorder(3, 0, 0, 0));
 
@@ -44,9 +45,7 @@ public class Import extends DFrame {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == slctBtn) {
-            ObjectMaker.cargarObjetos(this, txtMsg);
-            try {path.setText(ObjectMaker.getFileName());} catch(NullPointerException ex) {}
+            try {path.setText(ObjectImp.impObj(this, txtMsg));} catch(NullPointerException ex) {}
         }
     }
-    
 }

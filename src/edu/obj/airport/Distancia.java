@@ -5,8 +5,8 @@ import java.util.ArrayList;
 import edu.obj.*;
 
 public class Distancia implements Creable {
-    private static final ArrayList<String> origenes = new  ArrayList<>();
-    private static final ArrayList<String> destinos = new  ArrayList<>();
+    public static final ArrayList<String> origenes = new  ArrayList<>();
+    public static final ArrayList<String> destinos = new  ArrayList<>();
     private final String origen;
     private final String destino;
     private final int millas;

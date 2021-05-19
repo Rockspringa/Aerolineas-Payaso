@@ -1,8 +1,10 @@
-package edu.obj;
+package edu.obj.persis;
+
+import java.io.Serializable;
 
 import javax.swing.*;
 
-public class Matrix<T> {
+public class Matrix<T> implements Serializable {
     private Node<T> root;
 
     public Matrix(int rows, int cols) {
@@ -64,10 +66,10 @@ public class Matrix<T> {
 
     public void set(T fact, int row, int col) {
         Node<T> aux = this.root;
-        for (int x = 0; x < row - 1; x++) {
+        for (int x = 0; x < row; x++) {
             if (aux.getDown() != null)
                 aux = aux.getDown();
-        } for (int x = 0; x < col - 1; x++) {
+        } for (int x = 0; x < col; x++) {
             if (aux.getRigth() != null)
                 aux = aux.getRigth();
         } aux.set(fact);

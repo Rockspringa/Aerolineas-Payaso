@@ -1,7 +1,8 @@
 package edu.maker.exp;
 
 import edu.maker.Persistencia;
-import edu.obj.Matrix;
+import edu.obj.persis.Matrix;
+
 import javax.swing.*;
 import java.io.*;
 
@@ -30,26 +31,29 @@ public class HTMLMaker extends Persistencia {
         } catch (NullPointerException ex) {}
     }
 
-    public static StringBuilder getWeb(StringBuilder body) {
+    public static StringBuilder getWeb(String title, StringBuilder body) {
         StringBuilder sb = new StringBuilder();
 
         sb.append("<!DOCTYPE html>\n<html>\n");
-        addTag(HEAD, addTag(TITLE, "Estadisticas y Reportes"), sb);
+        addTag(HEAD, addTag(TITLE, title), sb);
         sb.append(body);
         sb.append("</html>");
 
         return sb;
     }
 
-    public static void exportarWeb(JFrame frame, StringBuilder web) {
-        File folder = getFolder(frame, "Seleccione la carpeta de destino.");
-        File file = new File(folder.getPath() + "\\" + "Estadisticas_Reportes.html");
-        guardarArchivo(file, web.toString());
+    public static void exportarWeb(JFrame frame, String title, StringBuilder web) {
+        try {
+            File folder = getFolder(frame, "Seleccione la carpeta de destino.");
+            File file = new File(folder.getPath() + "\\" + title + ".html");
+            guardarArchivo(file, web.toString());
+        } catch (Exception e) {}
     }
 
     public static StringBuilder createTable(String header, Matrix<Object> datos) {
         StringBuilder sb = new StringBuilder();
-        addTag(BODY, addTag(HEADER, header) + addTag(TABLE, addTable(datos)), sb);
+        sb.append(addTag(HEADER, header));
+        sb.append(addTag(TABLE, addTable(datos)));
         return sb;
     }
 

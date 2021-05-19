@@ -2,6 +2,12 @@ package edu.obj;
 
 import java.util.ArrayList;
 
+import edu.enums.Obj;
+import edu.obj.users.Admin;
+import edu.obj.users.Gerente;
+import edu.obj.users.Operador;
+import edu.obj.users.Pasajero;
+
 /**
  * Implements an user, this is the basic type of person that interacts with the program, this is the
  * abstract type of that one, but this don't have any abstract method, so it's an normal class.
@@ -25,12 +31,8 @@ public abstract class User implements Creable {
     public User(String nombre, String contraseña) {
         this.nombre = nombre;
         this.contraseña = contraseña;
-        if (exists("temp", "temp")) {
-            users.clear();
-            pass.clear();
-        }
         users.add(nombre);
-        users.add(contraseña);
+        pass.add(contraseña);
     }
 
     /**
@@ -48,6 +50,20 @@ public abstract class User implements Creable {
         } catch (IndexOutOfBoundsException e) {
             return false;
         }
+    }
+
+    public static Obj getUser(String nombre, String contraseña) {
+        if (exists(nombre, contraseña)) {
+            if (Pasajero.exists(nombre, contraseña)) {
+                return Obj.PASAJERO;
+            } else if (Admin.exists(nombre, contraseña)) {
+                return Obj.ADMINISTRADOR;
+            } else if (Gerente.exists(nombre, contraseña)) {
+                return Obj.GERENTE;
+            } else if (Operador.exists(nombre, contraseña)) {
+                return Obj.OPERADOR;
+            }
+        } return null;
     }
 
     /**

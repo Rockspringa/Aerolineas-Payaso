@@ -6,17 +6,17 @@ import java.util.ArrayList;
 import edu.obj.*;
 
 public class Vuelo implements Creable {
-    private static final ArrayList<Integer> codigos = new ArrayList<Integer>();
+    private static final ArrayList<String> codigos = new ArrayList<>();
     private final int precioBoleto;
-    private final Avion avion;
-    private final int codigo;
-    private final Aeropuerto origen;
-    private final Aeropuerto destino;
+    private final String avion;
+    private final String codigo;
+    private final String origen;
+    private final String destino;
     private final LocalDate fechaVuelo;
 
     
-    public Vuelo(int precioBoleto, Avion avion, int codigo, Aeropuerto origen, Aeropuerto destino,
-            LocalDate fechaVuelo) {
+    public Vuelo(String codigo, String avion, String origen, String destino,
+                    int precioBoleto, LocalDate fechaVuelo) {
         this.avion = avion;
         this.codigo = codigo;
         this.origen = origen;
@@ -26,27 +26,23 @@ public class Vuelo implements Creable {
         Vuelo.codigos.add(codigo);
     }
     
-    public static boolean exists(Integer cod) {
+    public static boolean exists(String cod) {
         return codigos.contains(cod);
     }
 
-    public static boolean exists(int cod) {
-        return exists(Integer.valueOf(cod));
-    }
-    
-    public int getCodigo() {
+    public String getCodigo() {
         return this.codigo;
     }
 
-    public Avion getAvion() {
+    public String getAvion() {
         return this.avion;
     }
 
-    public Aeropuerto getOrigen() {
+    public String getOrigen() {
         return this.origen;
     }
 
-    public Aeropuerto getDestino() {
+    public String getDestino() {
         return this.destino;
     }
 

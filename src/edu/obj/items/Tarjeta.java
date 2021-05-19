@@ -11,10 +11,11 @@ import edu.obj.*;
  * purposse.
  */
 public class Tarjeta implements Creable {
-    private static final ArrayList<Integer> nums = new ArrayList<>();
+    private static final ArrayList<Long> nums = new ArrayList<>();
     private final int pasaporte;
-    private final int numTarjeta;
+    private final long numTarjeta;
     private final int cvc;
+    private int gastos = 0;
     private int dinero;
 
     /**
@@ -24,20 +25,20 @@ public class Tarjeta implements Creable {
      * @param dinero is the actual amount of money that the user gets.
      * @param cvc is an number for... I don't know...
      */
-    public Tarjeta(int numTarjeta, int pasaporte, int dinero, int cvc) {
+    public Tarjeta(long numTarjeta, int pasaporte, int dinero, int cvc) {
         this.numTarjeta = numTarjeta;
         this.pasaporte = pasaporte;
         this.dinero = dinero;
         this.cvc = cvc;
-        nums.add(Integer.valueOf(numTarjeta));
+        nums.add(Long.valueOf(numTarjeta));
     }
     
-    public static boolean exists(Integer num) {
+    public static boolean exists(Long num) {
         return nums.contains(num);
     }
 
-    public static boolean exists(int num) {
-        return exists(Integer.valueOf(num));
+    public static boolean exists(long num) {
+        return exists(Long.valueOf(num));
     }
     
     /**
@@ -53,7 +54,7 @@ public class Tarjeta implements Creable {
      * 
      * @return the number that identify the card.
      */
-    public int getNumeroTarjeta() {
+    public long getNumeroTarjeta() {
         return this.numTarjeta;
     }
 
@@ -63,6 +64,14 @@ public class Tarjeta implements Creable {
      */
     public int getNumPasaporte() {
         return this.pasaporte;
+    }
+
+    public int getGastos() {
+        return this.gastos;
+    }
+
+    public void setGastos(int dinero) {
+        this.gastos += dinero;
     }
 
     /**

@@ -1,42 +1,84 @@
 package edu.obj.airport;
 
-import java.util.ArrayList;
+import java.time.LocalDate;
+import java.util.*;
 
 import edu.obj.Creable;
+import edu.obj.persis.Matrix;
 
 public class Avion implements Creable {
-    private static final ArrayList<Integer> codigos = new ArrayList<>();
+    public static final ArrayList<String> codigos = new ArrayList<>();
+    public static HashMap<String, Matrix<String>> asientos;
     private final String aerolinea;
-    private final double gasPerMilla;
+    private final int gasPerMilla;
     private final int maxGasolina;
-    private final int codigo;
+    private final String codigo;
     private String aeropuertoActual;
     private Vuelo vuelo;
     private int rows;
     private int cols;
-    private int gasolinaActual;
-    
-    public Avion(String aerolinea, String aeropuertoActual, int codigo, int rows, int cols, int maxGasolina,
-            int gasolinaActual, double gasPerMilla) {
+    private ArrayList<Integer> consumida = new ArrayList<>();
+    private ArrayList<LocalDate> fechaConsumo = new ArrayList<>();
+    private int cant = 0;
+
+    static {
+        asientos = new HashMap<>();
+    }
+
+    public Avion(String aerolinea, String aeropuertoActual, String codigo, int capacidad, int maxGasolina,
+            int gasPerMilla) {
         this.aerolinea = aerolinea;
         this.aeropuertoActual = aeropuertoActual;
         this.codigo = codigo;
-        this.rows = rows;
-        this.cols = cols;
+        if (capacidad != 200) {
+            this.rows = (int) (Math.sqrt(capacidad));
+            this.cols = (rows * rows >= capacidad) ? rows
+                    : rows + (int) ((capacidad - rows * rows) / rows - 1.999999999999999999999);
+        } else {
+            this.rows = 50;
+            this.cols = 6;
+        }
         this.maxGasolina = maxGasolina;
-        this.gasolinaActual = gasolinaActual;
         this.gasPerMilla = gasPerMilla;
         codigos.add(codigo);
+        asientos.put(codigo, llenarAsientos(rows, cols));
     }
 
-    public static boolean exists(Integer cod) {
+    public Avion(String aerolinea, String aeropuertoActual, String codigo, int r, int c, int maxGasolina,
+            int gasPerMilla) {
+        this.aerolinea = aerolinea;
+        this.aeropuertoActual = aeropuertoActual;
+        this.codigo = codigo;
+        this.rows = r;
+        this.cols = c;
+        this.maxGasolina = maxGasolina;
+        this.gasPerMilla = gasPerMilla;
+        codigos.add(codigo);
+        asientos.put(codigo, llenarAsientos(rows, cols));
+    }
+
+    private static Matrix<String> llenarAsientos(int rows, int cols) {
+        Matrix<String> as = new Matrix<>(rows, cols);
+        int[] l = as.length();
+        for (int m = 0; m < l[0]; m++) {
+            for (int n = 0; n < l[1]; n++) {
+                as.set((2 == n) ? "" : "b", m, n);
+            }
+        } return as;
+    }
+
+    public void addPasajero() {
+        this.cant++;
+    }
+
+    public int getCantPasajeros() {
+        return this.cant;
+    }
+
+    public static boolean exists(String cod) {
         return codigos.contains(cod);
     }
 
-    public static boolean exists(int cod) {
-        return exists(Integer.valueOf(cod));
-    }
-    
     public String getAerolinea() {
         return this.aerolinea;
     }
@@ -49,7 +91,7 @@ public class Avion implements Creable {
         this.aeropuertoActual = aeropuertoActual;
     }
 
-    public int getCodigo() {
+    public String getCodigo() {
         return this.codigo;
     }
 
@@ -61,16 +103,20 @@ public class Avion implements Creable {
         return this.maxGasolina;
     }
 
-    public int getGasolinaActual() {
-        return this.gasolinaActual;
+    public ArrayList<Integer> getConsumo() {
+        return this.consumida;
     }
 
-    public void setGasolinaActual(int gasolina) {
-        if (maxGasolina >= gasolina)
-            this.gasolinaActual = gasolina;
+    public ArrayList<LocalDate> getFechasConsumo() {
+        return this.fechaConsumo;
     }
 
-    public double getGasPerMilla() {
+    public void addConsumo(int gasolina, LocalDate fecha) {
+        this.consumida.add(Integer.valueOf(gasolina));
+        this.fechaConsumo.add(fecha);
+    }
+
+    public int getGasPerMilla() {
         return this.gasPerMilla;
     }
 
