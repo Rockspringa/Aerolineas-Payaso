@@ -46,10 +46,11 @@ public class ObjectMaker extends Persistencia {
                                     Integer.parseInt(att[3]), Integer.parseInt(att[4]),
                                     Integer.parseInt(att[5]));
                                 
-                    else if (att.length == 7)
+                    else if (att.length == 8)
                         obj = crearAvion(frame, att[0], att[1], att[2],
                                     Integer.parseInt(att[3]), Integer.parseInt(att[4]),
-                                    Integer.parseInt(att[5]), Integer.parseInt(att[6]));
+                                    Integer.parseInt(att[5]), Integer.parseInt(att[6]),
+                                    Integer.parseInt(att[7]));
                     
                     else
                         throw new AttributeNotFoundException(msg);
@@ -113,13 +114,20 @@ public class ObjectMaker extends Persistencia {
 
     private static Aerolinea crearAerolinea(JFrame frame, String aeropuerto, String nombre) throws Exception {
         Aerolinea aer = null;
-        if (!Aerolinea.exists(aeropuerto, nombre)) {
-            Aeropuerto ae = ((Aeropuerto) (ObjectImp.impObj(frame, "Aeropuerto_" + aeropuerto)));
+        Aeropuerto ae = ((Aeropuerto) (ObjectImp.impObj(frame, "Aeropuerto_" + aeropuerto)));
+        if (!Aerolinea.exists(nombre)) {
             aer = new Aerolinea(aeropuerto, nombre);
             ae.getAerolineas().add(nombre);
             ObjectExp.expObj(frame, ae);
         } else {
-            throw new Exception("a Aerolinea");
+            aer = (Aerolinea) ObjectImp.impObj(frame, "Aerolinea_" + nombre);
+            if (aer.existsAeropuerto(aeropuerto)) {
+                throw new Exception("a Aerolinea");
+            } else {
+                aer.addAeropuerto(aeropuerto);
+                ae.getAerolineas().add(nombre);
+                ObjectExp.expObj(frame, ae);
+            }
         } return aer;
     }
 
@@ -127,11 +135,14 @@ public class ObjectMaker extends Persistencia {
                 int capacidad, int maxGasolina, int gasPerMilla) throws Exception {
         Avion avi = null;
         if (!Avion.exists(codigo)) {
+            Aerolinea lin = ((Aerolinea) (ObjectImp.impObj(frame, "Aerolinea_" + aerolinea)));
             Aeropuerto aer = ((Aeropuerto) (ObjectImp.impObj(frame, "Aeropuerto_" + aeropuertoActual)));
             if (aer.getAerolineas().contains(aerolinea)) {
                 avi = new Avion(aerolinea, aeropuertoActual, codigo, capacidad, maxGasolina, gasPerMilla);
                 aer.getAviones().add(codigo);
+                lin.addAvion(codigo);
                 ObjectExp.expObj(frame, aer);
+                ObjectExp.expObj(frame, lin);
             }
         } else {
             throw new Exception("e Avion");
@@ -139,14 +150,17 @@ public class ObjectMaker extends Persistencia {
     }
 
     private static Avion crearAvion(JFrame frame, String aerolinea, String aeropuertoActual, String codigo,
-                int r, int c, int maxGasolina, int gasPerMilla) throws Exception {
+                int r, int c, int pas, int maxGasolina, int gasPerMilla) throws Exception {
         Avion avi = null;
         if (!Avion.exists(codigo)) {
+            Aerolinea lin = ((Aerolinea) (ObjectImp.impObj(frame, "Aerolinea_" + aeropuertoActual)));
             Aeropuerto aer = (Aeropuerto) (ObjectImp.impObj(frame, "Aeropuerto_" + aeropuertoActual));
             if (aer.getAerolineas().contains(aerolinea)) {
-                avi = new Avion(aerolinea, aeropuertoActual, codigo, r, c, maxGasolina, gasPerMilla);
+                avi = new Avion(aerolinea, aeropuertoActual, codigo, r, c, pas, maxGasolina, gasPerMilla);
                 aer.getAviones().add(codigo);
+                lin.addAvion(codigo);
                 ObjectExp.expObj(frame, aer);
+                ObjectExp.expObj(frame, lin);
             }
         } else {
             throw new Exception("e Avion");
@@ -171,7 +185,7 @@ public class ObjectMaker extends Persistencia {
         if (!Vuelo.exists(codigo)) {
             Avion av = (Avion) (ObjectImp.impObj(frame, "Avion_" + avion));
             Distancia dis = (Distancia) (ObjectImp.impObj(frame, "Distancia_" + origen + "_" + destino));
-            Aerolinea aer = (Aerolinea) (ObjectImp.impObj(frame, "Aerolinea_" + av.getAerolinea() + "_" + origen));
+            Aerolinea aer = (Aerolinea) (ObjectImp.impObj(frame, "Aerolinea_" + av.getAerolinea()));
             Aeropuerto ap = (Aeropuerto) (ObjectImp.impObj(frame, "Aeropuerto_" + origen));
 
             vue = new Vuelo(codigo, avion, origen, destino, precioBoleto, fechaVuelo);
@@ -230,9 +244,11 @@ public class ObjectMaker extends Persistencia {
                 res = new Reservacion(pasaporte, vuelo, tarjeta, numAsiento);
                 ax.set("r", r, c);
                 av.addPasajero();
+                vu.addNombre(ps.getNombre(), ps.getApellido());
                 ps.getReservaciones().add(res);
                 ObjectExp.expObj(frame, ps);
                 ObjectExp.expObj(frame, av);
+                ObjectExp.expObj(frame, vu);
             }
             System.out.print("");
         } else {

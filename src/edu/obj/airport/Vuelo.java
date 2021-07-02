@@ -4,16 +4,17 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 
 import edu.obj.*;
+import edu.obj.persis.Lista;
 
 public class Vuelo implements Creable {
-    private static final ArrayList<String> codigos = new ArrayList<>();
+    public static final ArrayList<String> codigos = new ArrayList<>();
     private final int precioBoleto;
     private final String avion;
     private final String codigo;
     private final String origen;
     private final String destino;
     private final LocalDate fechaVuelo;
-
+    private Lista nombres = new Lista();
     
     public Vuelo(String codigo, String avion, String origen, String destino,
                     int precioBoleto, LocalDate fechaVuelo) {
@@ -28,6 +29,14 @@ public class Vuelo implements Creable {
     
     public static boolean exists(String cod) {
         return codigos.contains(cod);
+    }
+
+    public Lista getNombres() {
+        return this.nombres;
+    }
+
+    public void addNombre(String nombre, String apellido) {
+        this.nombres.add(nombre + " " + apellido);
     }
 
     public String getCodigo() {

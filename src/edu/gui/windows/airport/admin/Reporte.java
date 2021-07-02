@@ -16,6 +16,8 @@ import edu.maker.exp.HTMLMaker;
 import edu.maker.imp.ObjectImp;
 import edu.obj.Aeropuerto;
 import edu.obj.airport.Avion;
+import edu.obj.airport.Vuelo;
+import edu.obj.persis.Lista;
 import edu.obj.persis.Matrix;
 import edu.obj.users.Pasajero;
 
@@ -47,7 +49,8 @@ public class Reporte extends DFrame {
         DateTimeFormatter f = DateTimeFormatter.ofPattern("d/MM/yyyy");
         date1 = null;
         while (true) {
-            String fecha = JOptionPane.showInputDialog(this, "Ingrese la fecha desde la cual empezara el reporte."
+            String fecha = JOptionPane.showInputDialog(this, "Ingrese la fecha desde la cual\n"
+                                        + "empezara el reporte.\n"
                                         + "En formato dd/mm/yy", "", JOptionPane.PLAIN_MESSAGE);
 
             try {
@@ -58,7 +61,8 @@ public class Reporte extends DFrame {
 
         date2 = null;
         while (true) {
-            String fecha = JOptionPane.showInputDialog(this, "Ingrese la fecha hasta la cual terminara el reporte."
+            String fecha = JOptionPane.showInputDialog(this, "Ingrese la fecha hasta la cual\n"
+                                        + "terminara el reporte.\n"
                                         + "En formato dd/mm/yy", "", JOptionPane.PLAIN_MESSAGE);
 
             try {
@@ -94,12 +98,33 @@ public class Reporte extends DFrame {
 
                     web.append(HTMLMaker.createTable("Reporte por Aerolinea", datosAer));
                     
-                    Matrix<Object> datosVue = new Matrix<>(0, 0);
+                    ArrayList<Vuelo> vue = new ArrayList<>();
 
-                    web.append(HTMLMaker.createTable("Reporte por Vuelo", datosVue));
+                    for (int x = 0; x < Vuelo.codigos.size(); x++) {
+                        try {
+                            vue.add((Vuelo) (ObjectImp.impObj(frame, "Vuelo_" + Vuelo.codigos.get(x))));
+                        } catch (NameNotFoundException e) {}
+                    }
+
+                    Matrix<Object> datosVuelo = new Matrix<>(0, 0);
+                    
+                    web.append(HTMLMaker.createTable("Reporte por Vuelo", datosVuelo));
+                    
+                    for (int x = 0; x < vue.size(); x++) {
+                        Lista nom = vue.get(x).getNombres();
+                        ArrayList<String> nomPas = new ArrayList<>();
+                        for (int y = 0; y < nom.getLength(); y++)
+                            nomPas.add(nom.get(y));
+                        
+                        Matrix<Object> datosVue = new Matrix<>(1, nomPas.size() + 1);
+                        
+                        datosVue.add("");
+                        for (int y = 0; y < nomPas.size(); y++) {
+                                datosVue.add(nomPas.get(y));
+                        } web.append(HTMLMaker.createTable("Vuelo " + vue.get(x).getCodigo(), datosVue));
+                    }
                     
                     ArrayList<String> conAvion = new ArrayList<>();
-
                     ArrayList<Avion> avs = new ArrayList<>();
                     for (int x = 0; x < Avion.codigos.size(); x++) {
                         try {

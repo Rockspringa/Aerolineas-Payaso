@@ -126,13 +126,17 @@ public class Initial extends DFrame implements MouseInputListener {
         if (pane == publicPane) {
             bg = publicImage.getBackground();
             String[] options = {"Comprar tickets", "Ir al login"};
-            int x = JOptionPane.showOptionDialog(this, "Elija a donde desea entrar.",
-                "Escoja uno", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE,
-                Icon.USUARIO.getIcon(), options, options[0]);
-            if (x == 0)
-                frame = new TicketSale();
-            else if (x == 1)
-                frame = new Login(getOpenFrame());
+
+            try {
+                int x = JOptionPane.showOptionDialog(this, "Elija a donde desea entrar.",
+                    "Escoja uno", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE,
+                    Icon.USUARIO.getIcon(), options, options[0]);
+                    if (x == 0)
+                        frame = new TicketSale();
+                    else if (x == 1)
+                        frame = new Login(this);
+            } catch (Exception ex) {}
+
         } else if (pane == employeesPane) {
             bg = employeesImage.getBackground();
             frame = new Login(this);

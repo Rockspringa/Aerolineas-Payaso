@@ -77,8 +77,12 @@ public class ObjectImp extends Persistencia {
                 }
                 
                 sb.append(HTMLMaker.fontTag(obj, color, true));
-                box.setText(sb.toString());
             }
+            new Thread() {
+                public void run() {
+                    box.setText(sb.toString());
+                };
+            }.start();
 
         } catch (FileNotFoundException exec) {
             JOptionPane.showMessageDialog(frame, "Error 404, file not fount",

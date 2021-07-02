@@ -13,12 +13,13 @@ public class Avion implements Creable {
     private final int gasPerMilla;
     private final int maxGasolina;
     private final String codigo;
+    private ArrayList<LocalDate> fechaConsumo = new ArrayList<>();
+    private ArrayList<Integer> consumida = new ArrayList<>();
     private String aeropuertoActual;
     private Vuelo vuelo;
     private int rows;
     private int cols;
-    private ArrayList<Integer> consumida = new ArrayList<>();
-    private ArrayList<LocalDate> fechaConsumo = new ArrayList<>();
+    private int pas;
     private int cant = 0;
 
     static {
@@ -38,33 +39,39 @@ public class Avion implements Creable {
             this.rows = 50;
             this.cols = 6;
         }
+        this.pas = 2;
         this.maxGasolina = maxGasolina;
         this.gasPerMilla = gasPerMilla;
         codigos.add(codigo);
         asientos.put(codigo, llenarAsientos(rows, cols));
     }
 
-    public Avion(String aerolinea, String aeropuertoActual, String codigo, int r, int c, int maxGasolina,
+    public Avion(String aerolinea, String aeropuertoActual, String codigo, int r, int c, int pas, int maxGasolina,
             int gasPerMilla) {
         this.aerolinea = aerolinea;
         this.aeropuertoActual = aeropuertoActual;
         this.codigo = codigo;
         this.rows = r;
         this.cols = c;
+        this.pas = pas;
         this.maxGasolina = maxGasolina;
         this.gasPerMilla = gasPerMilla;
         codigos.add(codigo);
-        asientos.put(codigo, llenarAsientos(rows, cols));
+        asientos.put(codigo, llenarAsientos(rows, cols, pas));
     }
 
-    private static Matrix<String> llenarAsientos(int rows, int cols) {
+    private static Matrix<String> llenarAsientos(int rows, int cols, int pas) {
         Matrix<String> as = new Matrix<>(rows, cols);
         int[] l = as.length();
         for (int m = 0; m < l[0]; m++) {
             for (int n = 0; n < l[1]; n++) {
-                as.set((2 == n) ? "" : "b", m, n);
+                as.set((pas == n) ? "" : "b", m, n);
             }
         } return as;
+    }
+
+    private static Matrix<String> llenarAsientos(int rows, int cols) {
+        return llenarAsientos(rows, cols, 2);
     }
 
     public void addPasajero() {
@@ -142,6 +149,23 @@ public class Avion implements Creable {
 
     public void setCols(int cols) {
         this.cols = cols;
+    }
+
+    public int getPasillo() {
+        return this.pas;
+    }
+
+    public void setPasillo(int pas) {
+        this.pas = pas - 1;
+    }
+
+    public void resizeMatrix() {
+        asientos.put(codigo, llenarAsientos(rows, cols, pas));
+    }
+
+    @Override
+    public String toString() {
+        return this.codigo;
     }
 
     @Override

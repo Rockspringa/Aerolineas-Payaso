@@ -17,25 +17,23 @@ public class Aviones extends DFrame {
     private JComboBox<Object> avionesCom;
 
     public Aviones(DFrame f) {
-        super("Seleccione el avion a visualizar", 450, 200);
+        super("Seleccione el avion a visualizar", 480, 175);
         setOpenFrame(f);
-        ((JPanel) (getContentPane())).setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));;
-
-        Dimension dim = new Dimension(200, 50);
+        ((JPanel) (getContentPane())).setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
         avionesLbl = new JLabel("Selecciones un avion");
-        avionesLbl.setPreferredSize(dim);
+        avionesLbl.setPreferredSize(new Dimension(380, 50));
         getContentPane().add(avionesLbl);
 
         avionesCom = new JComboBox<Object>(Avion.codigos.toArray());
-        avionesCom.setPreferredSize(dim);
+        avionesCom.setPreferredSize(new Dimension(170, 30));
         getContentPane().add(avionesCom);
 
-        getContentPane().add(createSeparatorPanel(440, 27));
+        getContentPane().add(new JLabel("                                                    "));
 
-        lstBtn = new JButton("Listo");
+        lstBtn = new JButton(" Visualizar ");
         lstBtn.addActionListener(this);
-        avionesLbl.setPreferredSize(new Dimension(100, 50));
+        avionesLbl.setPreferredSize(new Dimension(200, 45));
         getContentPane().add(lstBtn);
     }
 

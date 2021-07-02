@@ -181,7 +181,7 @@ public class TicketSale extends DFrame implements ItemListener {
             Aerolinea aer = null;
             try {
                 aer = (Aerolinea) (ObjectImp.impObj(this, "Aerolinea_" +
-                        aerolineasBox.getSelectedItem() + "_" + ciudades1Box.getSelectedItem()));
+                        aerolineasBox.getSelectedItem()));
                 vu = (Vuelo) (ObjectImp.impObj(this, "Vuelo_" +
                         aer.getCodigos().get(aer.getVuelos().indexOf((LocalDate) (vuelosBox.getSelectedItem())))
                         ));
@@ -207,8 +207,7 @@ public class TicketSale extends DFrame implements ItemListener {
         } if (e.getSource() == aerolineasBox) {
             Aerolinea aer = null;
             try {aer = (Aerolinea) (ObjectImp.impObj(this, "Aerolinea_"
-                    + aerolineasBox.getSelectedItem() + "_"
-                    + Aeropuerto.ciuInv.get(ciudades1Box.getSelectedItem().toString())));
+                    + aerolineasBox.getSelectedItem()));
             } catch (NameNotFoundException ex) {}
             if (aer != null) {
                 vuelosBox.removeAllItems();

@@ -45,6 +45,7 @@ public class Asientos extends DFrame implements MouseInputListener {
         super("Vista de asientos", 501, 602);
         setOpenFrame(null);
         JPanel win = (JPanel) (this.getContentPane());
+        DFrame ven = this;
         win.setLayout(new BorderLayout());
 
         vue = vuelo;
@@ -70,7 +71,6 @@ public class Asientos extends DFrame implements MouseInputListener {
                 super.paintComponent(g);
                 g.drawImage(Icon.AVION.getIcon().getImage(), 0, 0, this);
             }
-
         };
         asientosPane.setPreferredSize(new Dimension(width, height));
         
@@ -84,27 +84,36 @@ public class Asientos extends DFrame implements MouseInputListener {
             @Override
             public void run() {
                 asientosLbls = new JLabel[rows][cols];
+                int p = avion.getPasillo() - 1;
                 Matrix<String> ax = Avion.asientos.get(avion.getCodigo());
-                for (int m = 0; m < rows; m++) {
-                    for (int n = 0; n < cols; n++) {
-                        String dato = ax.get(m, n);
-                        asientosLbls[m][n] = new JLabel();
-                        if (n == 2) {
-                            asientosLbls[m][n].setBackground(SB);
-                            asientosLbls[m][n].setBorder(pasilloBord);
-                        } else if (dato.equals("r")) {
-                            asientosLbls[m][n].setBackground(RD);
-                            asientosLbls[m][n].setBorder(waitBord);
-                        } else if (dato.equals("b")) {
-                            asientosLbls[m][n].setBackground(BL);
-                            asientosLbls[m][n].setBorder(waitBord);
-                        }  if (listen && n != 2) {
-                            asientosLbls[m][n].addMouseListener(frame);
+                try {
+                    for (int m = 0; m < rows; m++) {
+                        for (int n = 0; n < cols; n++) {
+                            String dato = ax.get(m, n);
+                            asientosLbls[m][n] = new JLabel();
+                            if (n == p) {
+                                asientosLbls[m][n].setBackground(SB);
+                                asientosLbls[m][n].setBorder(pasilloBord);
+                            } else if (dato.equals("r")) {
+                                asientosLbls[m][n].setBackground(RD);
+                                asientosLbls[m][n].setBorder(waitBord);
+                            } else if (dato.equals("b")) {
+                                asientosLbls[m][n].setBackground(BL);
+                                asientosLbls[m][n].setBorder(waitBord);
+                            }  if (listen && n != p) {
+                                asientosLbls[m][n].addMouseListener(frame);
+                            }
+                            asientosLbls[m][n].setOpaque(true);
+                            asientosPane.add(asientosLbls[m][n]);
                         }
-                        asientosLbls[m][n].setOpaque(true);
-                        asientosPane.add(asientosLbls[m][n]);
                     }
+                } catch (NullPointerException exec) {
+                    ven.dispose();
+                    JOptionPane.showMessageDialog(ven, "Hubo un dato erroneo",
+                                        "Error", JOptionPane.ERROR_MESSAGE);
                 }
+                scroll.revalidate();
+                scroll.repaint();
             }
 
             public void start(MouseInputListener frame) {

@@ -152,7 +152,24 @@ public class Select extends DFrame implements MouseInputListener {
         } else if (pane == operaPane) {
             emp = "opera";
             bg = operaImage.getBackground();
-            frame = new Aviones(this);
+            String[] options = {"Visualizar un avion",
+                                "   Crear un avion  ",
+                                " Modificar un avion"};
+
+            try {
+                int x = JOptionPane.showOptionDialog(this, "Que desea realizar.",
+                    "Aciones de operador", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE,
+                    Icon.OPERA.getIcon(), options, options[0]);
+
+                    if (x == 0)
+                        frame = new Aviones(this);
+                    else if (x == 1)
+                        frame = new CrearAvion(this);
+                    else if (x == 2) {
+                        frame = new ModificarAvion(this, ModificarAvion.searchAvion(this));
+                    }
+            } catch (Exception ex) {}
+
         } if (crear && emp != null) {
             frame = new CrearEmp(this, emp);
         }
