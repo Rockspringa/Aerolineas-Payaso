@@ -1,6 +1,7 @@
 package edu.obj;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import edu.enums.Obj;
 import edu.obj.users.Admin;
@@ -13,14 +14,14 @@ import edu.obj.users.Pasajero;
  * abstract type of that one, but this don't have any abstract method, so it's an normal class.
  */
 public abstract class User implements Creable {
+    private static final HashMap<String, User> instances = new HashMap<>();
     private static final ArrayList<String> users = new ArrayList<>();
     private static final ArrayList<String> pass = new ArrayList<>();
     private final String nombre;
     private String contraseña = "";
 
     static {
-        users.add("temp");
-        pass.add("temp");
+        new Admin("temp", "temp");
     }
 
     /**
@@ -33,6 +34,8 @@ public abstract class User implements Creable {
         this.contraseña = contraseña;
         users.add(nombre);
         pass.add(contraseña);
+
+        instances.put(nombre + contraseña, this);
     }
 
     /**
@@ -102,5 +105,9 @@ public abstract class User implements Creable {
      */
     public boolean equalsContraseña(String contraseña) {
         return this.contraseña.equals(contraseña);
+    }
+
+    public static User getInstance(String nombre, String pass) {
+        return instances.get(nombre + pass);
     }
 }

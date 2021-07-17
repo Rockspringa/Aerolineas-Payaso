@@ -43,7 +43,9 @@ public class Asientos extends DFrame implements MouseInputListener {
 
     public Asientos(Avion avion, Vuelo vuelo, boolean listen) {
         super("Vista de asientos", 501, 602);
-        setOpenFrame(null);
+        this.setOpenFrame(null);
+        this.setFocusable(true);
+        this.getContentPane().addKeyListener(this);
         JPanel win = (JPanel) (this.getContentPane());
         DFrame ven = this;
         win.setLayout(new BorderLayout());
@@ -63,6 +65,8 @@ public class Asientos extends DFrame implements MouseInputListener {
             txtLbl = new JLabel("<html><br><div>Seleccione su asiento</div><br><html>");
             txtLbl.setHorizontalAlignment(JLabel.CENTER);
             win.add(txtLbl, BorderLayout.PAGE_START);
+        } else {
+            this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         }
 
         asientosPane = new JPanel(new GridLayout(rows, cols, 0, 0)) {
@@ -84,7 +88,7 @@ public class Asientos extends DFrame implements MouseInputListener {
             @Override
             public void run() {
                 asientosLbls = new JLabel[rows][cols];
-                int p = avion.getPasillo() - 1;
+                int p = avion.getPasillo();
                 Matrix<String> ax = Avion.asientos.get(avion.getCodigo());
                 try {
                     for (int m = 0; m < rows; m++) {
@@ -94,15 +98,19 @@ public class Asientos extends DFrame implements MouseInputListener {
                             if (n == p) {
                                 asientosLbls[m][n].setBackground(SB);
                                 asientosLbls[m][n].setBorder(pasilloBord);
+                                asientosLbls[m][n].setIcon(Icon.PASILLO.getIcon());
                             } else if (dato.equals("r")) {
+                                asientosLbls[m][n].setIcon(Icon.SILLON_X.getIcon());
                                 asientosLbls[m][n].setBackground(RD);
                                 asientosLbls[m][n].setBorder(waitBord);
                             } else if (dato.equals("b")) {
+                                asientosLbls[m][n].setIcon(Icon.SILLON_O.getIcon());
                                 asientosLbls[m][n].setBackground(BL);
                                 asientosLbls[m][n].setBorder(waitBord);
                             }  if (listen && n != p) {
                                 asientosLbls[m][n].addMouseListener(frame);
                             }
+                            asientosLbls[m][n].setHorizontalAlignment(JLabel.CENTER);
                             asientosLbls[m][n].setOpaque(true);
                             asientosPane.add(asientosLbls[m][n]);
                         }
@@ -129,6 +137,10 @@ public class Asientos extends DFrame implements MouseInputListener {
             crearBtn = new JButton("Seleccionar asientos");
             crearBtn.addActionListener(this);
             paneBtn.add(crearBtn);
+            this.setKeyBtn(crearBtn);
+        } else {
+            this.requestFocus();
+            this.setKeyBtn(this.getBackBtn());
         }
     }
 
@@ -170,7 +182,7 @@ public class Asientos extends DFrame implements MouseInputListener {
                 JOptionPane.showMessageDialog(this, "Su contraseña va a ser : 'abcd" + num + "'",
                                 "", JOptionPane.INFORMATION_MESSAGE);
             }
-        }
+        } this.requestFocus();
     }
 
     @Override
@@ -199,7 +211,7 @@ public class Asientos extends DFrame implements MouseInputListener {
                     }
                 }
             }
-        }
+        } this.requestFocus();
     }
 
     @Override

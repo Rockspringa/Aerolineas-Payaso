@@ -1,4 +1,4 @@
-package edu.gui.windows.airport.opera;
+package edu.gui.windows.airport.admin;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -21,6 +21,8 @@ public class CrearAvion extends DFrame implements ItemListener {
     private static final Dimension dimBox = new Dimension(130, 25);
     private static final Dimension dimBtn = new Dimension(160, 30);
     private static final Dimension dimSp = new Dimension(70, 25);
+
+    private boolean firstTime = true;
 
     private JPanel prinPanel;
 
@@ -148,6 +150,7 @@ public class CrearAvion extends DFrame implements ItemListener {
     private void create(JComboBox<Object> sp, JPanel pan, ArrayList<String> items) {
         if (items != null) {
             sp.setModel(new DefaultComboBoxModel<Object>(items.toArray()));
+            sp.setSelectedItem("- Seleccione uno -");
         }
         sp.setPreferredSize(dimBox);
         pan.add(sp);
@@ -238,6 +241,11 @@ public class CrearAvion extends DFrame implements ItemListener {
     @Override
     public void itemStateChanged(ItemEvent e) {
         try {
+            if (firstTime) {
+                linBox.setModel(new DefaultComboBoxModel<Object>(Aerolinea.nombres.toArray()));
+                linBox.setSelectedItem(e.getItem());
+                firstTime = false;
+            }
             String it = "Aerolinea_" + e.getItem().toString();
             Object[] aer = ((Aerolinea) (ObjectImp.impObj(this, it))).getAeropuertos();
             aerBox.setModel(new DefaultComboBoxModel<Object>(aer));

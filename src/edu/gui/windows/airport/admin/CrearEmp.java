@@ -6,6 +6,8 @@ import java.awt.event.*;
 import javax.swing.*;
 
 import edu.gui.components.DFrame;
+import edu.obj.Aeropuerto;
+import edu.obj.airport.Aerolinea;
 import edu.obj.users.Admin;
 import edu.obj.users.Gerente;
 import edu.obj.users.Operador;
@@ -27,8 +29,12 @@ public class CrearEmp extends DFrame implements FocusListener {
     private JLabel repPassLbl;
     private JTextField repPassTxt;
 
+    private JPanel aerPane;
+    private JLabel aerLbl;
+    private JComboBox<Object> aerBox;
+
     public CrearEmp(DFrame frame, String empleado) {
-        super("Crear " + empleado, 500, 260);
+        super("Crear " + empleado, 500, (empleado == "admin") ? 260 : 330);
         setOpenFrame(frame);
         emp = empleado.toLowerCase();
         FlowLayout frameLyt = (FlowLayout) (this.getContentPane().getLayout());
@@ -77,6 +83,21 @@ public class CrearEmp extends DFrame implements FocusListener {
         this.repPassTxt.addFocusListener(this);
         this.repPassPane.add(this.repPassTxt);
 
+        this.aerPane = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 0));
+        this.aerPane.setPreferredSize(dimPane);
+        this.getContentPane().add(this.aerPane);
+
+        this.aerLbl = new JLabel("Escoja " + ((empleado == "geren") ? "la aerolinea" : "el aeropuerto"));
+        this.aerLbl.setPreferredSize(dimLbl);
+        this.aerPane.add(aerLbl);
+
+        this.aerBox = new JComboBox<>((empleado == "geren")
+                                ? Aerolinea.nombres.toArray()
+                                : Aeropuerto.nombres.toArray());
+        this.aerBox.setPreferredSize(dimTxt);
+        this.aerBox.setSelectedItem("- Seleccione uno -");
+        this.aerPane.add(this.aerBox);
+
         this.logearBtn = new JButton("Log In");
         this.logearBtn.addActionListener(this);
         this.logearBtn.setEnabled(false);
@@ -96,10 +117,10 @@ public class CrearEmp extends DFrame implements FocusListener {
                     new Admin(userTxt.getText(), repPassTxt.getText());
                     break;
                 case "geren":
-                    new Gerente(userTxt.getText(), repPassTxt.getText());
+                    new Gerente(userTxt.getText(), repPassTxt.getText(), aerBox.getSelectedItem().toString());
                     break;
                 case "opera":
-                    new Operador(userTxt.getText(), repPassTxt.getText());
+                    new Operador(userTxt.getText(), repPassTxt.getText(), aerBox.getSelectedItem().toString());
                     break;
                 default:
                     break;

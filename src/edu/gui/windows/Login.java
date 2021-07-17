@@ -25,6 +25,7 @@ public class Login extends DFrame implements FocusListener {
     public Login(DFrame frame) {
         super("Login", 400, 210);
         setOpenFrame(frame);
+
         FlowLayout frameLyt = (FlowLayout) (this.getContentPane().getLayout());
         frameLyt.setVgap(20);
 
@@ -41,6 +42,7 @@ public class Login extends DFrame implements FocusListener {
         this.userPane.add(userLbl);
 
         this.userTxt = new JTextField();
+        this.userTxt.addKeyListener(this);
         this.userTxt.setPreferredSize(dimTxt);
         this.userTxt.addFocusListener(this);
         this.userTxt.addActionListener(this);
@@ -55,6 +57,7 @@ public class Login extends DFrame implements FocusListener {
         this.passPane.add(passLbl);
 
         this.passTxt = new JTextField();
+        this.passTxt.addKeyListener(this);
         this.passTxt.setPreferredSize(dimTxt);
         this.passTxt.addFocusListener(this);
         this.passTxt.addActionListener(this);
@@ -65,6 +68,7 @@ public class Login extends DFrame implements FocusListener {
         this.logearBtn.setEnabled(false);
         this.logearBtn.setPreferredSize(new Dimension(95, 35));
         this.getContentPane().add(this.logearBtn);
+        this.setKeyBtn(logearBtn);
     }
 
     @Override
@@ -90,9 +94,14 @@ public class Login extends DFrame implements FocusListener {
                     case OPERADOR:
                         opcion = 2;
                         break;
+
                     default:
                         break;
-                } if (opcion != -1) new Select(getOpenFrame(), opcion).open();
+                } if (opcion != -1) {
+                    DFrame.setUser(User.getInstance(userTxt.getText(),
+                                        passTxt.getText()));
+                    new Select(getOpenFrame(), opcion).open();
+                }
             } else {
                 JOptionPane.showMessageDialog(this, "El usuario o la contraseña son incorrectos, vuelva a intentarlo",
                                         "Identidad no encontrada", JOptionPane.ERROR_MESSAGE);
@@ -123,6 +132,4 @@ public class Login extends DFrame implements FocusListener {
             logearBtn.setEnabled(true);
         }
     }
-
-
 }

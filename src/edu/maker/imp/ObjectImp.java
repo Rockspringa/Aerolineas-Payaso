@@ -11,6 +11,7 @@ import javax.swing.*;
 import edu.maker.exp.HTMLMaker;
 import edu.maker.exp.ObjectExp;
 import edu.enums.Obj;
+import edu.gui.components.DFrame;
 import edu.maker.ObjectMaker;
 import edu.maker.Persistencia;
 import edu.obj.Creable;
@@ -42,56 +43,70 @@ public class ObjectImp extends Persistencia {
     public static String getPathObj(String filename) {
         return objFol.getPath() + "\\" + filename + ".delta";
     }
+
+    public static boolean delObj(JFrame frame, String filename) {
+        return new File(getPathObj(filename)).delete();
+    }
     
-    public static String impObj(JFrame frame, JEditorPane box) {
+    public static boolean delObj(JFrame frame, Creable cb) {
+        return delObj(frame, cb.getFilename());
+    }
+    
+    public static String impObj(DFrame frame, JEditorPane box) {
         File ret = getTxtFile(frame, "Seleccione el archivo de datos");
-        try (FileInputStream fileIn = new FileInputStream(ret);) {
-            InputStreamReader reader = new InputStreamReader(fileIn);
-            BufferedReader br = new BufferedReader(reader);
 
-            StringBuilder sb = new StringBuilder();
-            String line;
-            String obj;
-            String color;
-            int numLine = 0;
+        new Thread() {
+            public void run() {
+                try (FileInputStream fileIn = new FileInputStream(ret);) {
+                    InputStreamReader reader = new InputStreamReader(fileIn);
+                    BufferedReader br = new BufferedReader(reader);
 
-            box.setText("");
-            while ((line = br.readLine()) != null) {
-                ++numLine;
-                obj = "Linea " + numLine + ": ";
-                try {
-                    obj += getObjText(frame, line);
-                    color = "#F7F7F7";
-                } catch (NameNotFoundException e) {
-                    obj += e.getMessage();
-                    color = "#B9002D";
-                } catch (AttributeNotFoundException e) {
-                    obj += e.getMessage();
-                    color = "#B9002D";
-                } catch (RuntimeException e) {
-                    obj += "No se encontro la sintaxis requerida.";
-                    color = "#B9002D";
-                } catch (Exception e) {
-                    obj += "Ya existe es " + e.getMessage();
-                    color = "#B9002D";
-                }
-                
-                sb.append(HTMLMaker.fontTag(obj, color, true));
-            }
-            new Thread() {
-                public void run() {
-                    box.setText(sb.toString());
-                };
-            }.start();
+                    StringBuilder sb = new StringBuilder();
+                    String line;
+                    String obj;
+                    String color;
+                    int numLine = 0;
 
-        } catch (FileNotFoundException exec) {
-            JOptionPane.showMessageDialog(frame, "Error 404, file not fount",
-                                    "Error 404", JOptionPane.ERROR_MESSAGE);
-        } catch (IOException exec) {
-            JOptionPane.showMessageDialog(frame, "Error trying to close the file.",
-                                    "File Error", JOptionPane.ERROR_MESSAGE);
-        } catch (NullPointerException exec) {}
-        return ret.getName();
+                    box.setText("");
+                    while ((line = br.readLine()) != null) {
+                        ++numLine;
+                        obj = "Linea " + numLine + ": ";
+                        try {
+                            obj += getObjText(frame, line);
+                            color = "#F7F7F7";
+                        } catch (NameNotFoundException e) {
+                            obj += e.getMessage();
+                            color = "#B9002D";
+                        } catch (AttributeNotFoundException e) {
+                            obj += e.getMessage();
+                            color = "#B9002D";
+                        } catch (RuntimeException e) {
+                            obj += "No se encontro la sintaxis requerida.";
+                            color = "#B9002D";
+                        } catch (Exception e) {
+                            obj += "Ya existe es " + e.getMessage();
+                            color = "#B9002D";
+                        }
+                        
+                        sb.append(HTMLMaker.fontTag(obj, color, true));
+                    }
+                    new Thread() {
+                        public void run() {
+                            box.setText(sb.toString());
+                        };
+                    }.start();
+
+                } catch (FileNotFoundException exec) {
+                    JOptionPane.showMessageDialog(frame, "Error 404, file not fount",
+                                            "Error 404", JOptionPane.ERROR_MESSAGE);
+                } catch (IOException exec) {
+                    JOptionPane.showMessageDialog(frame, "Error trying to close the file.",
+                                            "File Error", JOptionPane.ERROR_MESSAGE);
+                } catch (NullPointerException exec) {}
+                frame.setCharging(false);
+            };
+        }.start();
+        return (ret != null) ? ret.getName() : "";
     }
 
     private static String getObjText(JFrame frame, String line) throws RuntimeException, Exception {

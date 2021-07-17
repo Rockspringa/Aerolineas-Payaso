@@ -19,6 +19,7 @@ public class Aeropuerto implements Creable {
     private final ArrayList<LocalDate> fechas = new ArrayList<>();
     private final ArrayList<String> codAviones;
     private final ArrayList<Distancia> distancias;
+    private final ArrayList<String> vuelos;
     private final ArrayList<String> aerolineas;
 
     /**
@@ -34,6 +35,7 @@ public class Aeropuerto implements Creable {
         this.codAviones = new ArrayList<>();
         this.distancias = new ArrayList<>();
         this.aerolineas = new ArrayList<>();
+        this.vuelos = new ArrayList<>();
         ciudades.put(nombre, ciudad);
         ciuInv.put(ciudad, nombre);
         nombres.add(nombre);
@@ -49,6 +51,18 @@ public class Aeropuerto implements Creable {
      */
     public String getNombre() {
         return this.nombre;
+    }
+
+    public void addVuelo(String vuelo) {
+        this.vuelos.add(vuelo);
+    }
+
+    public void delVuelo(String vuelo) {
+        this.vuelos.remove(vuelo);
+    }
+
+    public Object[] getVuelos() {
+        return this.vuelos.toArray();
     }
 
     public ArrayList<Integer> getGanancias() {

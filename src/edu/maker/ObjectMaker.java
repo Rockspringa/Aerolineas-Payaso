@@ -193,6 +193,7 @@ public class ObjectMaker extends Persistencia {
             av.addConsumo(av.getGasPerMilla() * dis.getMillas(), fechaVuelo);
             aer.addVuelo(codigo, fechaVuelo);
             ap.addGanancias(precioBoleto, fechaVuelo);
+            ap.addVuelo(codigo);
             ObjectExp.expObj(frame, av);
             ObjectExp.expObj(frame, aer);
             ObjectExp.expObj(frame, ap);

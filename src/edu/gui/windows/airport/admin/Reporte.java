@@ -49,9 +49,9 @@ public class Reporte extends DFrame {
         DateTimeFormatter f = DateTimeFormatter.ofPattern("d/MM/yyyy");
         date1 = null;
         while (true) {
-            String fecha = JOptionPane.showInputDialog(this, "Ingrese la fecha desde la cual\n"
-                                        + "empezara el reporte.\n"
-                                        + "En formato dd/mm/yy", "", JOptionPane.PLAIN_MESSAGE);
+            String fecha = JOptionPane.showInputDialog(this, "\tIngrese la fecha desde la cual\t\n"
+                                        + "\tempezara el reporte.\t\n"
+                                        + "\tEn formato dd/mm/yy", "", JOptionPane.PLAIN_MESSAGE);
 
             try {
                 date1 = LocalDate.parse(fecha, f);
@@ -61,9 +61,9 @@ public class Reporte extends DFrame {
 
         date2 = null;
         while (true) {
-            String fecha = JOptionPane.showInputDialog(this, "Ingrese la fecha hasta la cual\n"
-                                        + "terminara el reporte.\n"
-                                        + "En formato dd/mm/yy", "", JOptionPane.PLAIN_MESSAGE);
+            String fecha = JOptionPane.showInputDialog(this, "\tIngrese la fecha hasta la cual\t\n"
+                                        + "\tterminara el reporte.\t\n"
+                                        + "\tEn formato dd/mm/yy", "", JOptionPane.PLAIN_MESSAGE);
 
             try {
                 date2 = LocalDate.parse(fecha, f);

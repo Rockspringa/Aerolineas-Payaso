@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 
 import edu.obj.Creable;
+import edu.obj.users.Gerente;
 
 public class Aerolinea implements Creable {
     public static final ArrayList<String> nombres = new ArrayList<>();
@@ -12,6 +13,7 @@ public class Aerolinea implements Creable {
     private final ArrayList<String> aviones = new ArrayList<>();
     private final ArrayList<String> codigos = new ArrayList<>();
     private final String nombre;
+    private Gerente geren;
     
     public Aerolinea(String aeropuerto, String nombre) {
         this.nombre = nombre;
@@ -75,5 +77,14 @@ public class Aerolinea implements Creable {
     @Override
     public String getFilename() {
         return "Aerolinea_" + this.nombre;
+    }
+
+    public Gerente getGeren() {
+        return geren;
+    }
+
+    public void setGeren(Gerente geren) {
+        if (this.geren != null)
+            this.geren = geren;
     }
 }

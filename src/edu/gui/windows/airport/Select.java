@@ -3,11 +3,15 @@ package edu.gui.windows.airport;
 import java.awt.event.*;
 import java.awt.*;
 
+import javax.naming.NameNotFoundException;
 import javax.swing.*;
 import javax.swing.border.*;
 import javax.swing.event.MouseInputListener;
 
 import edu.gui.windows.airport.opera.*;
+import edu.obj.Aeropuerto;
+import edu.obj.users.*;
+import edu.maker.imp.*;
 import edu.gui.windows.airport.admin.*;
 import edu.gui.components.DFrame;
 import edu.gui.files.Icon;
@@ -153,22 +157,37 @@ public class Select extends DFrame implements MouseInputListener {
             emp = "opera";
             bg = operaImage.getBackground();
             String[] options = {"Visualizar un avion",
-                                "   Crear un avion  ",
-                                " Modificar un avion"};
+                                " Operar Aeropuerto "};
 
-            try {
+            if (!crear)
+                try {
                 int x = JOptionPane.showOptionDialog(this, "Que desea realizar.",
-                    "Aciones de operador", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE,
-                    Icon.OPERA.getIcon(), options, options[0]);
+                            "Aciones de operador", JOptionPane.DEFAULT_OPTION,
+                            JOptionPane.INFORMATION_MESSAGE, Icon.OPERA.getIcon(),
+                            options, options[0]);
 
                     if (x == 0)
                         frame = new Aviones(this);
-                    else if (x == 1)
-                        frame = new CrearAvion(this);
-                    else if (x == 2) {
-                        frame = new ModificarAvion(this, ModificarAvion.searchAvion(this));
+                    else if (x == 1 && !(getUser() instanceof Operador)) {
+                        Aeropuerto aer = null;
+                        try {
+                            aer = (Aeropuerto) ObjectImp.impObj(frame, "Aeropuerto_"
+                                        + JOptionPane.showInputDialog(frame,
+                                            "\tEscoja el aeropuerto que desea\t\n\tadministrar\t\n",
+                                            "Busqueda de avion", JOptionPane.DEFAULT_OPTION, null,
+                                            Aeropuerto.nombres.toArray(),
+                                            Aeropuerto.nombres.toArray()[0]).toString()
+                                    );
+                            if (getUser() instanceof Admin)
+                                ((Admin) getUser()).setAeropuerto(aer.getNombre());
+                            else if (getUser() instanceof Gerente)
+                                ((Gerente) getUser()).setAeropuerto(aer.getNombre());
+                            frame = new Operar(this);
+                        } catch (NameNotFoundException ex) {}
+                    } else if (x == 1) {
+                        frame = new Operar(this);
                     }
-            } catch (Exception ex) {}
+                } catch (Exception ex) {}
 
         } if (crear && emp != null) {
             frame = new CrearEmp(this, emp);

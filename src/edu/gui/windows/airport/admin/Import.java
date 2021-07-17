@@ -45,7 +45,16 @@ public class Import extends DFrame {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == slctBtn) {
-            try {path.setText(ObjectImp.impObj(this, txtMsg));} catch(NullPointerException ex) {}
+            DFrame win = this;
+            try {
+                new Thread() {
+                    @Override
+                    public void run() {
+                        win.setCharging(true);
+                        path.setText(ObjectImp.impObj(win, txtMsg));
+                    }
+                }.start();
+            } catch(NullPointerException ex) {}
         }
     }
 }

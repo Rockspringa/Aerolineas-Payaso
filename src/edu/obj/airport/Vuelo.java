@@ -27,6 +27,16 @@ public class Vuelo implements Creable {
         Vuelo.codigos.add(codigo);
     }
     
+    public Vuelo(Vuelo vuelo, LocalDate fechaVuelo) {
+        this.avion = vuelo.avion;
+        this.codigo = vuelo.codigo;
+        this.origen = vuelo.origen;
+        this.destino = vuelo.destino;
+        this.fechaVuelo = fechaVuelo;
+        this.precioBoleto = 0;
+        Vuelo.codigos.add(codigo);
+    }
+    
     public static boolean exists(String cod) {
         return codigos.contains(cod);
     }

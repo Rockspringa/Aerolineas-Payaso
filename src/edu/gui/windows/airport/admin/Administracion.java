@@ -7,7 +7,6 @@ import javax.swing.*;
 import javax.swing.border.*;
 import javax.swing.event.MouseInputListener;
 
-import edu.enums.Obj;
 import edu.gui.components.DFrame;
 import edu.gui.files.Icon;
 import edu.gui.windows.airport.Select;
@@ -18,15 +17,15 @@ public class Administracion extends DFrame implements MouseInputListener {
     private Border selectBorder;
 
     private JPanel importPane;
-    private JPanel reportPane;
+    private JPanel airlinePane;
     private JPanel userPane;
 
     private JLabel importLbl;
-    private JLabel reportLbl;
+    private JLabel airlineLbl;
     private JLabel userLbl;
 
     private JLabel importImage;
-    private JLabel reportImage;
+    private JLabel airlineImage;
     private JLabel userImage;
 
     public Administracion(DFrame frame) {
@@ -53,12 +52,12 @@ public class Administracion extends DFrame implements MouseInputListener {
         importPane.setBorder(paneBorder);
         win.add(importPane);
 
-        reportPane = new JPanel(new BorderLayout());
-        reportPane.setAlignmentY(JPanel.CENTER_ALIGNMENT);
-        reportPane.setPreferredSize(dimPane);
-        reportPane.addMouseListener(this);
-        reportPane.setBorder(paneBorder);
-        win.add(reportPane);
+        airlinePane = new JPanel(new BorderLayout());
+        airlinePane.setAlignmentY(JPanel.CENTER_ALIGNMENT);
+        airlinePane.setPreferredSize(dimPane);
+        airlinePane.addMouseListener(this);
+        airlinePane.setBorder(paneBorder);
+        win.add(airlinePane);
 
         userPane = new JPanel(new BorderLayout());
         userPane.setAlignmentY(JPanel.CENTER_ALIGNMENT);
@@ -75,11 +74,11 @@ public class Administracion extends DFrame implements MouseInputListener {
         importImage.setOpaque(true);
         importPane.add(importImage, BorderLayout.CENTER);
 
-        reportImage = new JLabel(Icon.REPORTE.getIcon());
-        reportImage.setPreferredSize(dimImage);
-        reportImage.setBorder(generalBorder);
-        reportImage.setOpaque(true);
-        reportPane.add(reportImage, BorderLayout.CENTER);
+        airlineImage = new JLabel(Icon.AVION.getIcon(150, 150));
+        airlineImage.setPreferredSize(dimImage);
+        airlineImage.setBorder(generalBorder);
+        airlineImage.setOpaque(true);
+        airlinePane.add(airlineImage, BorderLayout.CENTER);
 
         userImage = new JLabel(Icon.USUARIO.getIcon());
         userImage.setPreferredSize(dimImage);
@@ -93,9 +92,9 @@ public class Administracion extends DFrame implements MouseInputListener {
         importLbl.setHorizontalAlignment(JLabel.CENTER);
         importPane.add(importLbl, BorderLayout.SOUTH);
 
-        reportLbl = new JLabel("Ver reportes");
-        reportLbl.setHorizontalAlignment(JLabel.CENTER);
-        reportPane.add(reportLbl, BorderLayout.SOUTH);
+        airlineLbl = new JLabel("Aerolineas");
+        airlineLbl.setHorizontalAlignment(JLabel.CENTER);
+        airlinePane.add(airlineLbl, BorderLayout.SOUTH);
 
         userLbl = new JLabel("Crear empleado");
         userLbl.setVerticalAlignment(JLabel.CENTER);
@@ -114,9 +113,9 @@ public class Administracion extends DFrame implements MouseInputListener {
         if (e.getSource() == importPane) {
             importImage.setBackground(DFrame.AQUA);
             importPane.setBorder(selectBorder);
-        } if (e.getSource() == reportPane) {
-            reportImage.setBackground(DFrame.AQUA);
-            reportPane.setBorder(selectBorder);
+        } if (e.getSource() == airlinePane) {
+            airlineImage.setBackground(DFrame.AQUA);
+            airlinePane.setBorder(selectBorder);
         }
     }
 
@@ -131,9 +130,22 @@ public class Administracion extends DFrame implements MouseInputListener {
         } else if (pane == importPane) {
             bg = importImage.getBackground();
             frame = new Import(this);
-        } else if (pane == reportPane) {
-            bg = reportImage.getBackground();
-            frame = new Reporte(this, Obj.ADMINISTRADOR);
+        } else if (pane == airlinePane) {
+            bg = airlineImage.getBackground();
+            try {
+                String[] options = {"   Crear un avion  ",
+                                    " Modificar un avion"};
+
+                Object x = JOptionPane.showInputDialog(this, "Que desea realizar.\n",
+                                    "Aciones de operador", JOptionPane.DEFAULT_OPTION,
+                                    null, options, options[0]);
+    
+                if (x.toString().equals(options[0]))
+                    frame = new CrearAvion(this);
+                else if (x.toString().equals(options[1])) {
+                    frame = new ModificarAvion(this, ModificarAvion.searchAvion(this));
+                }
+            } catch (NullPointerException ex) {}
         } if (bg != DFrame.BACKG_COLOR) {
             this.mouseExited(e);
             if (frame != null) {
@@ -152,9 +164,9 @@ public class Administracion extends DFrame implements MouseInputListener {
         } if (e.getSource() == importPane) {
             importImage.setBackground(DFrame.FOCUS_COLOR);
             importLbl.setForeground(DFrame.AQUA);
-        } if (e.getSource() == reportPane) {
-            reportImage.setBackground(DFrame.FOCUS_COLOR);
-            reportLbl.setForeground(DFrame.AQUA);
+        } if (e.getSource() == airlinePane) {
+            airlineImage.setBackground(DFrame.FOCUS_COLOR);
+            airlineLbl.setForeground(DFrame.AQUA);
         }
     }
 
@@ -167,9 +179,9 @@ public class Administracion extends DFrame implements MouseInputListener {
         } if (pane == importPane) {
             importImage.setBackground(DFrame.BACKG_COLOR);
             importLbl.setForeground(DFrame.WHITE);
-        } if (pane == reportPane) {
-            reportImage.setBackground(DFrame.BACKG_COLOR);
-            reportLbl.setForeground(DFrame.WHITE);
+        } if (pane == airlinePane) {
+            airlineImage.setBackground(DFrame.BACKG_COLOR);
+            airlineLbl.setForeground(DFrame.WHITE);
         }
         pane.setBorder(paneBorder);
     }

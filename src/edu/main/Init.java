@@ -17,7 +17,7 @@ public class Init {
                     winInit.open();
                 } catch (Exception e) {
                     JOptionPane.showMessageDialog(winInit,
-                                "Ocurrio un error que no se controlo", "Error",
+                                e.getLocalizedMessage(), "Error",
                                 JOptionPane.ERROR_MESSAGE);
                 }
             }
